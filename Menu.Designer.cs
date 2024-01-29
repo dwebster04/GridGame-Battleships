@@ -35,6 +35,8 @@ namespace GridGame_Battleships
             this.btnStart.Text = "START GAME";
             this.btnStart.UseVisualStyleBackColor = false;
             this.btnStart.Click += new System.EventHandler(this.btnStartEvent_Click);
+            btnStart.MouseEnter += new EventHandler(Btn_MouseEnter);
+            btnStart.MouseLeave += new EventHandler(Btn_MouseLeave);
             // 
             // btnExit
             // 
@@ -46,6 +48,8 @@ namespace GridGame_Battleships
             this.btnExit.Text = "EXIT";
             this.btnExit.UseVisualStyleBackColor = false;
             this.btnExit.Click += new System.EventHandler(this.btnExitEvent_Click);
+            btnExit.MouseEnter += new EventHandler(Btn_MouseEnter);
+            btnExit.MouseLeave += new EventHandler(Btn_MouseLeave);
             // 
             // Menu
             // 
@@ -79,6 +83,18 @@ namespace GridGame_Battleships
             Manager.Instance.GameState = 2; // open game
                                             // Close the menu form
             this.Close();
+        }
+
+        void Btn_MouseEnter(object sender, EventArgs e)
+        {
+            // Change the button color when the mouse enters
+            ((Button)sender).BackColor = System.Drawing.Color.Red;
+        }
+
+        void Btn_MouseLeave(object sender, EventArgs e)
+        {
+            // Change the button color back to its original color when the mouse leaves
+            ((Button)sender).BackColor = System.Drawing.Color.DarkOrchid;
         }
         void Menu_Load(object sender, EventArgs e) //REQUIRED
         { }

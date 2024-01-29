@@ -67,6 +67,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShipControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <EmbeddedResource Include="Menu.resx">
       <DependentUpon>Menu.cs</DependentUpon>
     </EmbeddedResource>
