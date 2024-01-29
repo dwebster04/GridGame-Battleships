@@ -32,25 +32,26 @@ namespace GridGame_Battleships
             CreateButtons();
         }
 
-        void CreateButtons()
+        private void CreateButtons()
         {
-            Button[,] btn = new Button[10, 10];
+            Button[,] btn = new Button[7, 7];
 
             // Create ship controls on the side of the form and add them to the form
             ships = new ShipControl[5, 1]; // 5 ships, 1 column
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 4; i++)
             {
                 ships[i, 0] = new ShipControl();
                 ships[i, 0].Location = new Point(10, 100 + i * 60); // Adjust the location as needed
+                ships[i, 0].Size = new Size((i + 2) * 50, 50);
                 Controls.Add(ships[i, 0]); // Add ship control to the form's controls
             }
 
-            for (int x = 0; x < 10; x++)
+            for (int x = 0; x < 7; x++)
             {
-                for (int y = 0; y < 10; y++)
+                for (int y = 0; y < 7; y++)
                 {
                     btn[x, y] = new Button();
-                    btn[x, y].SetBounds(55 + (55 * x), 55 + (55 * y), 45, 45);
+                    btn[x, y].SetBounds(0 + (50 * x), 0 + (50 * y), 50, 50);
                     btn[x, y].BackColor = Color.PowderBlue;
                     btn[x, y].Text = Convert.ToString((x + 1) + "," + (y + 1));
                     btn[x, y].Click += new EventHandler(this.btnEvent_Click);

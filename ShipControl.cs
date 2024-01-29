@@ -27,14 +27,19 @@ namespace GridGame_Battleships
         private void ShipControl_MouseDown(object sender, MouseEventArgs e)
         {
             isDragging = true;
-            offset = new Point(e.X, e.Y);
-        }
+            offset = new Point(Width / 2, Height / 2);
+            // Setting the offset to half of the width and height to center the ship control
 
+            // Adjust the location so the ship is centered on the mouse
+            this.Location = new Point(e.X - offset.X, e.Y - offset.Y);
+        }
         private void ShipControl_MouseMove(object sender, MouseEventArgs e)
         {
             if (isDragging)
             {
                 Point newLocation = ((Control)sender).PointToScreen(new Point(e.X, e.Y));
+                newLocation.Offset(-offset.X, -offset.Y);
+
                 this.Location = this.Parent.PointToClient(newLocation);
             }
         }
