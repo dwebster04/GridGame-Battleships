@@ -2,6 +2,7 @@
 using System;
 using System.Windows.Forms;
 using System.Diagnostics;
+
 namespace GridGame_Battleships
 {
     partial class GAME
@@ -9,6 +10,8 @@ namespace GridGame_Battleships
         private ShipControl[,] ships;
 
         private System.ComponentModel.IContainer components = null;
+
+        private Button btnSubmit; // Declare the Submit button
 
         protected override void Dispose(bool disposing)
         {
@@ -23,13 +26,19 @@ namespace GridGame_Battleships
         {
             this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 800);
+            this.ClientSize = new System.Drawing.Size(500, 375);
             this.Text = "GAME";
-
-            // The designer-generated code remains unchanged
 
             // Call the method to create buttons
             CreateButtons();
+
+            // Create and initialize the Submit button
+            btnSubmit = new Button();
+            btnSubmit.Text = "Submit";
+            btnSubmit.Size = new Size(100, 50);
+            btnSubmit.Location = new Point(375, 25); // Adjust the location as needed
+            btnSubmit.Click += new EventHandler(this.btnSubmit_Click); // Associate click event
+            Controls.Add(btnSubmit); // Add the Submit button to the form
         }
 
         private void CreateButtons()
@@ -65,6 +74,14 @@ namespace GridGame_Battleships
         private void btnEvent_Click(object sender, EventArgs e)
         {
             Debug.WriteLine(((Button)sender).Text);
+        }
+
+        private void btnSubmit_Click(object sender, EventArgs e)
+        {
+            // Logic to check which buttons on the grid the ships are most on top of
+            // You can iterate over the ships and compare their positions with the grid buttons
+            // Perform the necessary logic here
+            Debug.WriteLine("Submit button clicked!");
         }
 
         private void GAME_Load(object sender, EventArgs e) // REQUIRED
