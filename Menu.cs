@@ -16,5 +16,10 @@ namespace GridGame_Battleships
         {
             InitializeComponent();
         }
+
+        private void Menu_Load_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }

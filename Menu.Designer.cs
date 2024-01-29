@@ -20,28 +20,45 @@ namespace GridGame_Battleships
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Menu));
             this.btnStart = new System.Windows.Forms.Button();
+            this.btnExit = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnStart
             // 
             this.btnStart.BackColor = System.Drawing.Color.DarkOrchid;
-            this.btnStart.Location = new System.Drawing.Point(351, 25);
+            this.btnStart.Location = new System.Drawing.Point(280, 175);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(150, 45);
+            this.btnStart.Size = new System.Drawing.Size(400, 75);
             this.btnStart.TabIndex = 0;
             this.btnStart.Text = "START GAME";
             this.btnStart.UseVisualStyleBackColor = false;
             this.btnStart.Click += new System.EventHandler(this.btnStartEvent_Click);
             // 
+            // btnExit
+            // 
+            this.btnExit.BackColor = System.Drawing.Color.DarkOrchid;
+            this.btnExit.Location = new System.Drawing.Point(280, 275);
+            this.btnExit.Name = "btnExit";
+            this.btnExit.Size = new System.Drawing.Size(400, 75);
+            this.btnExit.TabIndex = 0;
+            this.btnExit.Text = "EXIT";
+            this.btnExit.UseVisualStyleBackColor = false;
+            this.btnExit.Click += new System.EventHandler(this.btnExitEvent_Click);
+            // 
             // Menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 800);
+            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ClientSize = new System.Drawing.Size(980, 590);
             this.Controls.Add(this.btnStart);
+            this.Controls.Add(this.btnExit);
             this.Name = "Menu";
             this.Text = "Menu";
+            this.Load += new System.EventHandler(this.Menu_Load_1);
             this.ResumeLayout(false);
 
         }
@@ -54,9 +71,19 @@ namespace GridGame_Battleships
         // Close the menu form
         this.Close();
         }
+
+        void btnExitEvent_Click(object sender, EventArgs e)
+        {
+            Debug.WriteLine(((Button)sender).Text); // SAME handler as before
+                                                    // Update the game state
+            Manager.Instance.GameState = 2; // open game
+                                            // Close the menu form
+            this.Close();
+        }
         void Menu_Load(object sender, EventArgs e) //REQUIRED
         { }
 
         private Button btnStart;
+        private Button btnExit;
     }
 }

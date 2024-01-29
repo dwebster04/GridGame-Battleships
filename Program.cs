@@ -29,13 +29,17 @@ namespace GridGame_Battleships
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Menu());
-            if (Manager.Instance.GameState == 1)
-            {
-                Application.Run(new GAME());
-            }
-        }
 
+            while (Manager.Instance.GameState != 2) // if its 2 it means EXIT has been pressed
+            {
+                Application.Run(new Menu());
+                if (Manager.Instance.GameState == 1) // if its 1 it means START has been pressed
+                {
+                    Application.Run(new GAME());
+                }
+            }
+
+        }
     }
-    }
+}
 
