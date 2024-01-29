@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -50,6 +51,14 @@ namespace GridGame_Battleships
         private void ShipControl_MouseUp(object sender, MouseEventArgs e)
         {
             isDragging = false;
+
+        }
+
+        public static int CalculateDistance(Point point1, Point point2)
+        {
+            int dx = point1.X - point2.X;
+            int dy = point1.Y - point2.Y;
+            return (int)Math.Sqrt(dx * dx + dy * dy);
         }
 
         private void ShipControl_KeyDown(object sender, KeyEventArgs e)

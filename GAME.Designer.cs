@@ -2,16 +2,18 @@
 using System;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Net.Sockets;
 
 namespace GridGame_Battleships
 {
     partial class GAME
     {
-        private ShipControl[,] ships;
+        public Button[,] btn = new Button[7, 7];
+        public ShipControl[,] ships;
 
         private System.ComponentModel.IContainer components = null;
 
-        private Button btnSubmit; // Declare the Submit button
+        private Button btnCheck; // Declare the Submit button
 
         protected override void Dispose(bool disposing)
         {
@@ -33,17 +35,17 @@ namespace GridGame_Battleships
             CreateButtons();
 
             // Create and initialize the Submit button
-            btnSubmit = new Button();
-            btnSubmit.Text = "Submit";
-            btnSubmit.Size = new Size(100, 50);
-            btnSubmit.Location = new Point(375, 25); // Adjust the location as needed
-            btnSubmit.Click += new EventHandler(this.btnSubmit_Click); // Associate click event
-            Controls.Add(btnSubmit); // Add the Submit button to the form
+            btnCheck = new Button();
+            btnCheck.Text = "Check";
+            btnCheck.Size = new Size(100, 50);
+            btnCheck.Location = new Point(375, 25); // Adjust the location as needed
+            btnCheck.Click += new EventHandler(this.btnCheck_Click); // Associate click event
+            Controls.Add(btnCheck); // Add the Submit button to the form
         }
 
         private void CreateButtons()
         {
-            Button[,] btn = new Button[7, 7];
+            
 
             // Create ship controls on the side of the form and add them to the form
             ships = new ShipControl[5, 1]; // 5 ships, 1 column
@@ -76,13 +78,38 @@ namespace GridGame_Battleships
             Debug.WriteLine(((Button)sender).Text);
         }
 
-        private void btnSubmit_Click(object sender, EventArgs e)
+        private void btnCheck_Click(object sender, EventArgs e)
         {
             // Logic to check which buttons on the grid the ships are most on top of
             // You can iterate over the ships and compare their positions with the grid buttons
             // Perform the necessary logic here
             Debug.WriteLine("Submit button clicked!");
-        }
+
+            for (int i = 0; i < 4; i++)
+            {
+                Button btnClosest = new Button();
+                int distance = 0;
+                int closest = 1000000;
+                for (int x = 0; x < 7; x++)
+                {
+                    for (int y = 0; y < 7; y++)
+                    {
+                        Point shipPos = new Point(ships[i, 0].Left, ships[i, 0].Top);
+                        Point btnPos = new Point(btn[x, y].Left, btn[x, y].Top);
+                        distance = ShipControl.CalculateDistance(shipPos, btnPos);
+
+                        if (distance < closest)
+                        {
+                            closest = distance;
+                            btnClosest = btn[x, y];
+                        }
+                    }
+
+                   
+                }
+                ships[i, 0].Location = btnClosest.Location;
+            }
+}
 
         private void GAME_Load(object sender, EventArgs e) // REQUIRED
         {
