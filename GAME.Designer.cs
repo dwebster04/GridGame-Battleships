@@ -10,6 +10,7 @@ namespace GridGame_Battleships
     {
         public Button[,] btn = new Button[7, 7];
         public int[,] occupied = new int[7, 7];
+        public string[] shipNames = new string[] { "Destroyer", "Submarine", "Battleship", "Carrier" };
         public ShipControl[,] ships;
 
         private String errorMessage = "";
@@ -110,6 +111,7 @@ namespace GridGame_Battleships
                 ships[i, 0] = new ShipControl();
                 ships[i, 0].Location = new Point(10, 100 + i * 60); // Adjust the location as needed
                 ships[i, 0].Size = new Size((i + 2) * 50, 50);
+                ships[i, 0].Text = shipNames[i];
                 Controls.Add(ships[i, 0]); // Add ship control to the form's controls
             }
 
@@ -237,7 +239,7 @@ namespace GridGame_Battleships
                     if (closestY + HeightValue > 7)
                     {
                         Debug.Print("INVALID SHIP OF LENGTH: {0}", HeightValue);
-                        errorMessage = $"The ship that is {HeightValue} units long is not fully on the grid";
+                        errorMessage = $"The {shipNames[HeightValue-2]} is not fully on the grid";
                         ValidShips = false;
                     }
 
@@ -257,7 +259,7 @@ namespace GridGame_Battleships
                     if (closestX + WidthValue > 7)
                     {
                         Debug.Print("INVALID SHIP OF LENGTH: {0}", WidthValue);
-                        errorMessage = $"The ship that is {WidthValue} units long is not fully on the grid";
+                        errorMessage = $"The {shipNames[WidthValue - 2]} is not fully on the grid";
                         ValidShips = false;
                     }
 
