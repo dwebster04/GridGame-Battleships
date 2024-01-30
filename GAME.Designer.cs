@@ -12,9 +12,12 @@ namespace GridGame_Battleships
         public int[,] occupied = new int[7, 7];
         public ShipControl[,] ships;
 
+        private String errorMessage = "";
         private System.ComponentModel.IContainer components = null;
         private bool ValidShips = false;
-        private Button btnCheck; // Declare the Submit button
+        private Button btnCheck; // Declare the Check button
+        private Button btnSubmit; // Declare the Submit button
+        private Button btnReset; // Declare the Reset button
 
         protected override void Dispose(bool disposing)
         {
@@ -31,23 +34,40 @@ namespace GridGame_Battleships
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(500, 375);
             this.Text = "GAME";
-
-            // Call the method to create buttons
-            CreateButtons();
-
-            // Create and initialize the Submit button
+            
+            // Create and initialize the Check button
             btnCheck = new Button();
             btnCheck.Text = "Check";
             btnCheck.Size = new Size(100, 50);
             btnCheck.Location = new Point(375, 25); // Adjust the location as needed
             btnCheck.Click += new EventHandler(this.btnCheck_Click); // Associate click event
             Controls.Add(btnCheck); // Add the Submit button to the form
+
+            // Create and initialize the Submit button
+            btnSubmit = new Button();
+            btnSubmit.Text = "Submit";
+            btnSubmit.Size = new Size(100, 50);
+            btnSubmit.Location = new Point(375, 100); // Adjust the location as needed
+            btnSubmit.Click += new EventHandler(this.btnSubmit_Click); // Associate click event
+            Controls.Add(btnSubmit); // Add the Submit button to the form
+
+            // Create and initialize the Reset button
+            btnReset = new Button();
+            btnReset.Text = "Reset";
+            btnReset.Size = new Size(100, 50);
+            btnReset.Location = new Point(375, 175); // Adjust the location as needed
+            btnReset.Click += new EventHandler(this.btnReset_Click); // Associate click event
+            Controls.Add(btnReset); // Add the Submit button to the form
+
+            // Call the method to create buttons
+            CreateButtons();
+
         }
+
+
 
         private void CreateButtons()
         {
-            
-
             // Create ship controls on the side of the form and add them to the form
             ships = new ShipControl[5, 1]; // 5 ships, 1 column
             for (int i = 0; i < 4; i++)
@@ -81,10 +101,31 @@ namespace GridGame_Battleships
 
         private void btnCheck_Click(object sender, EventArgs e)
         {
-            // Logic to check which buttons on the grid the ships are most on top of
-            // You can iterate over the ships and compare their positions with the grid buttons
-            // Perform the necessary logic here
             Debug.WriteLine("Check button clicked!");
+            check();
+
+            if (ValidShips)
+            {
+                btnCheck.BackColor = Color.Green; // Set to green if ships are valid
+            }
+            else
+            {
+                btnCheck.BackColor = Color.Red; // Set to red if ships are not valid
+            }
+        }
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            Debug.WriteLine("Reset button clicked!");
+            for (int i = 0; i < 4; i++)
+            {
+                
+                ships[i, 0].Location = new Point(10, 100 + i * 60); // Adjust the location as needed
+
+            }
+        }
+
+        private void check()
+        {      
             ValidShips = true;
 
             for (int i = 0; i < 7; i++)
@@ -120,6 +161,7 @@ namespace GridGame_Battleships
 
 
                 }
+
                 ships[i, 0].Location = btnClosest.Location;
                 ShipControl checkShip = ships[i, 0];
                 if (checkShip.Height > checkShip.Width) // if ships is vertical
@@ -129,15 +171,18 @@ namespace GridGame_Battleships
                     if (closestY + HeightValue > 7)
                     {
                         Debug.Print("INVALID SHIP OF LENGTH: {0}", HeightValue);
+                        errorMessage = $"The ship that is {HeightValue} units long is not fully on the grid";
                         ValidShips = false;
                     }
 
                     // if occupied is greater than one ships will be overlapping
-                    for (int j = closestY; i < HeightValue; i++)
+                    else
                     {
-                        occupied[closestX, j] += 1;
+                        for (int j = 0; j < HeightValue; j++)
+                        {
+                            occupied[closestX, closestY + j] += 1;
+                        }
                     }
-
                 }
                 else // if ships is horizontal
                 {
@@ -146,13 +191,17 @@ namespace GridGame_Battleships
                     if (closestX + WidthValue > 7)
                     {
                         Debug.Print("INVALID SHIP OF LENGTH: {0}", WidthValue);
+                        errorMessage = $"The ship that is {WidthValue} units long is not fully on the grid";
                         ValidShips = false;
                     }
 
                     // if occupied is greater than one ships will be overlapping
-                    for (int j = closestX; i < WidthValue; i++)
+                    else
                     {
-                        occupied[j, closestY] += 1;
+                        for (int j = 0; j < WidthValue; j++)
+                        {
+                            occupied[closestX + j, closestY] += 1;
+                        }
                     }
                 }
 
@@ -163,13 +212,38 @@ namespace GridGame_Battleships
                         if (occupied[c, d] > 1)
                         {
                             ValidShips = false;
-                            Debug.Print("INVALID SHIPS ARE OVERLAPPING AT {0} , {1}", c , d);
+                            Debug.Print("INVALID SHIPS ARE OVERLAPPING AT {0} , {1}", c + 1, d + 1);
+                            errorMessage = $"The ships overlap at ({c+1} , {c+1})";
 
                         }
                     }
                 }
             }
-}
+
+            for (int innerCounter = 0; innerCounter < 7; innerCounter++)
+            {
+                Debug.Print("{0} , {1}, {2}, {3}, {4} , {5} , {6}",
+                occupied[0, innerCounter], occupied[1, innerCounter], occupied[2, innerCounter],
+                occupied[3, innerCounter], occupied[4, innerCounter], occupied[5, innerCounter],
+                occupied[6, innerCounter]);
+            }
+        }
+        private void btnSubmit_Click(object sender, EventArgs e)
+        {
+            Debug.WriteLine("Submit button clicked!");
+            check();
+            if (ValidShips)
+            {
+                // go to gameplay against computer
+            }
+            else
+            {
+                // Display a pop-up window saying invalid ships
+                MessageBox.Show(errorMessage, "Invalid Ships", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                btnCheck.BackColor = Color.Red; // Set to red if ships are not valid
+            }
+        }
+
 
         private void GAME_Load(object sender, EventArgs e) // REQUIRED
         {
