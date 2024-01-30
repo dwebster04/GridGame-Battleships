@@ -88,7 +88,7 @@ namespace GridGame_Battleships
         void Btn_MouseEnter(object sender, EventArgs e)
         {
             // Change the button color when the mouse enters
-            ((Button)sender).BackColor = System.Drawing.Color.Red;
+            ((Button)sender).BackColor = System.Drawing.Color.Blue;
         }
 
         void Btn_MouseLeave(object sender, EventArgs e)

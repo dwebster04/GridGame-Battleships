@@ -18,6 +18,8 @@ namespace GridGame_Battleships
         private Button btnCheck; // Declare the Check button
         private Button btnSubmit; // Declare the Submit button
         private Button btnReset; // Declare the Reset button
+        private Button btnControls; // Declare the Controls button
+        private Button btnExit; // Declare the Exit button
 
         protected override void Dispose(bool disposing)
         {
@@ -32,32 +34,65 @@ namespace GridGame_Battleships
         {
             this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(500, 375);
+            this.ClientSize = new System.Drawing.Size(525, 400);
             this.Text = "GAME";
             
             // Create and initialize the Check button
             btnCheck = new Button();
             btnCheck.Text = "Check";
             btnCheck.Size = new Size(100, 50);
-            btnCheck.Location = new Point(375, 25); // Adjust the location as needed
+            btnCheck.Location = new Point(400, 25); // Adjust the location as needed
             btnCheck.Click += new EventHandler(this.btnCheck_Click); // Associate click event
+            btnCheck.MouseEnter += new EventHandler(this.Btn_MouseEnter);
+            btnCheck.MouseLeave += new EventHandler(this.Btn_MouseLeave);
+            btnCheck.BackColor = Color.DarkOrchid;
             Controls.Add(btnCheck); // Add the Submit button to the form
 
             // Create and initialize the Submit button
             btnSubmit = new Button();
             btnSubmit.Text = "Submit";
             btnSubmit.Size = new Size(100, 50);
-            btnSubmit.Location = new Point(375, 100); // Adjust the location as needed
+            btnSubmit.Location = new Point(400, 100); // Adjust the location as needed
             btnSubmit.Click += new EventHandler(this.btnSubmit_Click); // Associate click event
+            btnSubmit.MouseEnter += new EventHandler(this.Btn_MouseEnter);
+            btnSubmit.MouseLeave += new EventHandler(this.Btn_MouseLeave);
+            btnSubmit.BackColor = Color.DarkOrchid;
             Controls.Add(btnSubmit); // Add the Submit button to the form
 
             // Create and initialize the Reset button
             btnReset = new Button();
             btnReset.Text = "Reset";
             btnReset.Size = new Size(100, 50);
-            btnReset.Location = new Point(375, 175); // Adjust the location as needed
+            btnReset.Location = new Point(400, 175); // Adjust the location as needed
             btnReset.Click += new EventHandler(this.btnReset_Click); // Associate click event
+            btnReset.MouseEnter += new EventHandler(this.Btn_MouseEnter);
+            btnReset.MouseLeave += new EventHandler(this.Btn_MouseLeave);
+            btnReset.BackColor = Color.DarkOrchid;
             Controls.Add(btnReset); // Add the Submit button to the form
+
+            // Create and initialize the Controls button
+            btnControls = new Button();
+            btnControls.Text = "Controls";
+            btnControls.Size = new Size(100, 50);
+            btnControls.Location = new Point(400, 250); // Adjust the location as needed
+            btnControls.Click += new EventHandler(this.btnControls_Click); // Associate click event
+            btnControls.MouseEnter += new EventHandler(this.Btn_MouseEnter);
+            btnControls.MouseLeave += new EventHandler(this.Btn_MouseLeave);
+            btnControls.BackColor = Color.DarkOrchid;
+            Controls.Add(btnControls); // Add the Submit button to the form
+
+            // Create and initialize the Exit button
+            btnExit = new Button();
+            btnExit.Text = "Exit";
+            btnExit.Size = new Size(100, 50);
+            btnExit.Location = new Point(400, 325); // Adjust the location as needed
+            btnExit.Click += new EventHandler(this.btnExit_Click); // Associate click event
+            btnExit.MouseEnter += new EventHandler(this.Btn_MouseEnter);
+            btnExit.MouseLeave += new EventHandler(this.Btn_MouseLeave);
+            btnExit.BackColor = Color.DarkOrchid;
+            Controls.Add(btnExit); // Add the Submit button to the form
+
+
 
             // Call the method to create buttons
             CreateButtons();
@@ -83,7 +118,7 @@ namespace GridGame_Battleships
                 for (int y = 0; y < 7; y++)
                 {
                     btn[x, y] = new Button();
-                    btn[x, y].SetBounds(0 + (50 * x), 0 + (50 * y), 50, 50);
+                    btn[x, y].SetBounds(25 + (50 * x), 25 + (50 * y), 50, 50);
                     btn[x, y].BackColor = Color.PowderBlue;
                     btn[x, y].Text = Convert.ToString((x + 1) + "," + (y + 1));
                     btn[x, y].Click += new EventHandler(this.btnEvent_Click);
@@ -97,6 +132,18 @@ namespace GridGame_Battleships
         private void btnEvent_Click(object sender, EventArgs e)
         {
             Debug.WriteLine(((Button)sender).Text);
+        }
+
+        void Btn_MouseEnter(object sender, EventArgs e)
+        {
+            // Change the button color when the mouse enters
+            ((Button)sender).BackColor = System.Drawing.Color.Blue;
+        }
+
+        void Btn_MouseLeave(object sender, EventArgs e)
+        {
+            // Change the button color back to its original color when the mouse leaves
+            ((Button)sender).BackColor = System.Drawing.Color.DarkOrchid;
         }
 
         private void btnCheck_Click(object sender, EventArgs e)
@@ -122,6 +169,25 @@ namespace GridGame_Battleships
                 ships[i, 0].Location = new Point(10, 100 + i * 60); // Adjust the location as needed
 
             }
+        }
+
+        private void btnControls_Click(object sender, EventArgs e)
+        {
+            string message = "LMB - Click and Drag ships\n" +
+                             "R - Rotate Selected ships\n" +
+                             "All of the ship must be on the grids\n" +
+                             "Ships cannot overlap\n\n" +
+                             "Press CHECK to see if ships are in a valid positon\n" +
+                             "Press SUBMIT to start playing the game";
+            MessageBox.Show(message, "Controls", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        void btnExit_Click(object sender, EventArgs e)
+        {
+            Debug.WriteLine(((Button)sender).Text); // SAME handler as before
+                                                    // Update the game state
+            Manager.Instance.GameState = 0; // open menu
+                                            // Close the menu form
+            this.Close();
         }
 
         private void check()
