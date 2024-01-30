@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GridGame_Battleships
@@ -13,12 +8,14 @@ namespace GridGame_Battleships
     {
         private bool isDragging = false;
         private Point offset;
+        private Color originalColor;
 
         public ShipControl()
         {
             // Set default properties for the ship control
             this.Size = new Size(100, 40);
             this.BackColor = Color.Gray;
+            this.originalColor = this.BackColor; // Store the original color
             this.Text = "Ship";
             this.MouseDown += ShipControl_MouseDown;
             this.MouseMove += ShipControl_MouseMove;
@@ -35,6 +32,9 @@ namespace GridGame_Battleships
 
             // Adjust the location so the ship is centered on the mouse
             this.Location = new Point(e.X - offset.X, e.Y - offset.Y);
+
+            // Change color to pink while dragging
+            this.BackColor = Color.MediumOrchid;
         }
 
         private void ShipControl_MouseMove(object sender, MouseEventArgs e)
@@ -52,6 +52,8 @@ namespace GridGame_Battleships
         {
             isDragging = false;
 
+            // Revert to the original color when the mouse is released
+            this.BackColor = originalColor;
         }
 
         public static int CalculateDistance(Point point1, Point point2)
