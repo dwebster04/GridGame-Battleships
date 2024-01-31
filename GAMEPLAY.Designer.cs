@@ -27,11 +27,14 @@ namespace GridGame_Battleships
         }
 
         private Label lblYour_Grid;
+
+        private Label lblOpponents_Grid;
         private Button[,] playersBoard = new Button[7, 7];
+        private Button[,] computersBoard = new Button[7, 7];
         private int[,] playerBoardData = Manager.Instance.playerGrid;
         private ShipControl[,] playerShipsData = Manager.Instance.playerShips;
         public string[] shipNames = new string[] { "Destroyer", "Submarine", "Battleship", "Carrier" };
-        private Color[] shipColors = { Color.DarkMagenta, Color.Yellow, Color.Green, Color.Blue };
+        private Color[] shipColors = { Color.DarkMagenta, Color.Orange, Color.Green, Color.Blue };
 
 
         private void InitializeComponent()
@@ -53,7 +56,19 @@ namespace GridGame_Battleships
             lblYour_Grid.ForeColor = Color.White; // Set font color to white
             Controls.Add(lblYour_Grid); // Add the Label to the form
 
-            
+            // 
+            // lblOpponents_Grid
+            // 
+            lblOpponents_Grid = new Label();
+            lblOpponents_Grid.Location = new System.Drawing.Point(175, 10);
+            lblOpponents_Grid.Size = new System.Drawing.Size(210, 20);
+            lblOpponents_Grid.BackColor = Color.Crimson;
+            lblOpponents_Grid.Text = "OPPONENTS GRID";
+            lblOpponents_Grid.TextAlign = ContentAlignment.MiddleCenter; // Center the text
+            lblOpponents_Grid.ForeColor = Color.White; // Set font color to white
+            Controls.Add(lblOpponents_Grid); // Add the Label to the form
+
+
 
             CreateButtons();
 
@@ -112,11 +127,30 @@ namespace GridGame_Battleships
                     Controls.Add(playersBoard[x, y]);
                 }
             }
+
+            for (int x = 0; x < 7; x++)
+            {
+                for (int y = 0; y < 7; y++)
+                {
+                    computersBoard[x, y] = new Button();
+                    computersBoard[x, y].SetBounds(175 + (30 * x), 35 + (30 * y), 30, 30);
+                    computersBoard[x, y].BackColor = Color.Gray;
+
+                    computersBoard[x, y].Click += new EventHandler(this.computersBoard_Click);
+                    Controls.Add(computersBoard[x, y]);
+                }
+            }
         }
 
         private void playersBoard_Click(object sender, EventArgs e)
         {
             Debug.WriteLine(((Button)sender).Text);
+        }
+        private void computersBoard_Click(object sender, EventArgs e)
+        {
+            Button clickedButton = (Button)sender;
+            Debug.WriteLine(clickedButton.Text);
+            clickedButton.BackColor = Color.Red;
         }
     }
 }
