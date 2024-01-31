@@ -29,8 +29,9 @@ namespace GridGame_Battleships
         private Label lblYour_Grid;
         private Button[,] playersBoard = new Button[7, 7];
         private int[,] playerBoardData = Manager.Instance.playerGrid;
-        private ShipControl[,] playerShipsDate = Manager.Instance.playerShips;
+        private ShipControl[,] playerShipsData = Manager.Instance.playerShips;
         public string[] shipNames = new string[] { "Destroyer", "Submarine", "Battleship", "Carrier" };
+        private Color[] shipColors = { Color.DarkMagenta, Color.Yellow, Color.Green, Color.Blue };
 
 
         private void InitializeComponent()
@@ -52,6 +53,7 @@ namespace GridGame_Battleships
             lblYour_Grid.ForeColor = Color.White; // Set font color to white
             Controls.Add(lblYour_Grid); // Add the Label to the form
 
+            
 
             CreateButtons();
 
@@ -64,7 +66,7 @@ namespace GridGame_Battleships
                 {
                     for (int y = 0; y < 7; y++)
                     {
-                        if (playerShipsDate[i, 0].boardLocation[x, y] == 1)
+                        if (playerShipsData[i, 0].boardLocation[x, y] == 1)
                         {
                             Debug.Write($"({x + 1},{y + 1}) ");
                         }
@@ -83,22 +85,33 @@ namespace GridGame_Battleships
                 {
                     playersBoard[x, y] = new Button();
                     playersBoard[x, y].SetBounds(25 + (20 * x), 35 + (20 * y), 20, 20);
-                    if (playerBoardData[x,y] == 0)
+
+                    if (playerBoardData[x, y] == 0)
                     {
                         playersBoard[x, y].BackColor = Color.PowderBlue;
                     }
-                    if (playerBoardData[x, y] == 1)
+                    else if (playerBoardData[x, y] == 1)
                     {
                         playersBoard[x, y].BackColor = Color.MediumOrchid;
+
+                        // Assign the color of the corresponding ship
+                        for (int i = 0; i < 4; i++)
+                        {
+                            if (playerShipsData[i, 0].boardLocation[x, y] == 1)
+                            {
+                                playersBoard[x, y].BackColor = shipColors[i];
+                                break; // Stop searching once you find the ship
+                            }
+                        }
                     }
-                    
+
                     //playersBoard[x, y].Text = Convert.ToString((x + 1) + "," + (y + 1));
                     playersBoard[x, y].Click += new EventHandler(this.playersBoard_Click);
+
+                    // Add the button to the ShipControl
                     Controls.Add(playersBoard[x, y]);
                 }
             }
-
-
         }
 
         private void playersBoard_Click(object sender, EventArgs e)
