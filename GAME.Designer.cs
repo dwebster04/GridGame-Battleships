@@ -112,6 +112,13 @@ namespace GridGame_Battleships
                 ships[i, 0].Location = new Point(10, 100 + i * 60); // Adjust the location as needed
                 ships[i, 0].Size = new Size((i + 2) * 50, 50);
                 ships[i, 0].Text = shipNames[i];
+                for (int u = 0; u < 7; u++)
+                {
+                    for (int j = 0; j < 7; j++)
+                    {
+                        ships[i, 0].boardLocation[u, j] = 0;
+                    }
+                }
                 Controls.Add(ships[i, 0]); // Add ship control to the form's controls
             }
 
@@ -161,7 +168,26 @@ namespace GridGame_Battleships
             {
                 btnCheck.BackColor = Color.Red; // Set to red if ships are not valid
             }
+
+            for (int i = 0; i < 4; i++)
+            {
+                Debug.Write($"{shipNames[i]} is located at: ");
+
+                for (int x = 0; x < 7; x++)
+                {
+                    for (int y = 0; y < 7; y++)
+                    {
+                        if (ships[i, 0].boardLocation[x, y] == 1)
+                        {
+                            Debug.Write($"({x + 1},{y + 1}) ");
+                        }
+                    }
+                }
+
+                Debug.WriteLine(""); // Add a line break after each ship's coordinates
+            }
         }
+
         private void btnReset_Click(object sender, EventArgs e)
         {
             Debug.WriteLine("Reset button clicked!");
@@ -211,6 +237,15 @@ namespace GridGame_Battleships
                 int distance = 0;
                 int closest = 1000000;
                 int closestX = 0; int closestY = 0;
+
+                for (int u = 0; u < 7; u++)
+                {
+                    for (int v = 0; v < 7; v++)
+                    {
+                        ships[i, 0].boardLocation[u, v] = 0;
+                    }
+                }
+
                 for (int x = 0; x < 7; x++)
                 {
                     for (int y = 0; y < 7; y++)
@@ -248,6 +283,7 @@ namespace GridGame_Battleships
                     {
                         for (int j = 0; j < HeightValue; j++)
                         {
+                            ships[i,0].boardLocation[closestX, closestY + j] += 1;
                             occupied[closestX, closestY + j] += 1;
                         }
                     }
@@ -267,7 +303,9 @@ namespace GridGame_Battleships
                     else
                     {
                         for (int j = 0; j < WidthValue; j++)
+
                         {
+                            ships[i, 0].boardLocation[closestX + j, closestY] += 1;
                             occupied[closestX + j, closestY] += 1;
                         }
                     }
@@ -305,6 +343,7 @@ namespace GridGame_Battleships
                 // go to gameplay against computer
                 Manager.Instance.GameState = 3;
                 Manager.Instance.playerGrid = occupied;
+                Manager.Instance.playerShips = ships;
 
                 this.Close();
             }

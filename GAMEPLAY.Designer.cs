@@ -29,6 +29,8 @@ namespace GridGame_Battleships
         private Label lblYour_Grid;
         private Button[,] playersBoard = new Button[7, 7];
         private int[,] playerBoardData = Manager.Instance.playerGrid;
+        private ShipControl[,] playerShipsDate = Manager.Instance.playerShips;
+        public string[] shipNames = new string[] { "Destroyer", "Submarine", "Battleship", "Carrier" };
 
 
         private void InitializeComponent()
@@ -52,6 +54,25 @@ namespace GridGame_Battleships
 
 
             CreateButtons();
+
+            Debug.WriteLine("GAMEPLAY"); // Add a line break after each ship's coordinates
+            for (int i = 0; i < 4; i++)
+            {
+                Debug.Write($"{shipNames[i]} is located at: ");
+
+                for (int x = 0; x < 7; x++)
+                {
+                    for (int y = 0; y < 7; y++)
+                    {
+                        if (playerShipsDate[i, 0].boardLocation[x, y] == 1)
+                        {
+                            Debug.Write($"({x + 1},{y + 1}) ");
+                        }
+                    }
+                }
+
+                Debug.WriteLine(""); // Add a line break after each ship's coordinates
+            }
         }
 
         private void CreateButtons()

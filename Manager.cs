@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GridGame_Battleships;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ public class Manager
     // Game state property
     public int GameState { get; set; }
     public int[,] playerGrid = new int[7, 7];
+    public ShipControl[,] playerShips = new ShipControl[5, 1]; // 5 ships, 1 column;
 
     // Private constructor to enforce singleton pattern
     private Manager()

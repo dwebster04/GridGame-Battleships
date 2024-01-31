@@ -9,6 +9,7 @@ namespace GridGame_Battleships
         private bool isDragging = false;
         private Point offset;
         private Color originalColor;
+        public int[,] boardLocation = new int[7, 7];
 
         public ShipControl()
         {
