@@ -303,6 +303,8 @@ namespace GridGame_Battleships
             if (ValidShips)
             {
                 // go to gameplay against computer
+                Manager.Instance.GameState = 3;
+                this.Close();
             }
             else
             {

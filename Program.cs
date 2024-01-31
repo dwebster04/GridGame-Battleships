@@ -32,10 +32,19 @@ namespace GridGame_Battleships
 
             while (Manager.Instance.GameState != 2) // if its 2 it means EXIT has been pressed
             {
-                Application.Run(new Menu());
+                if (Manager.Instance.GameState == 0)
+                {
+                    Application.Run(new Menu());
+                }
+
                 if (Manager.Instance.GameState == 1) // if its 1 it means START has been pressed
                 {
                     Application.Run(new GAME());
+                }
+
+                if(Manager.Instance.GameState == 3)
+                {
+                    Application.Run(new GAMEPLAY());
                 }
             }
 
