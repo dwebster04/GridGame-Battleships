@@ -304,6 +304,8 @@ namespace GridGame_Battleships
             {
                 // go to gameplay against computer
                 Manager.Instance.GameState = 3;
+                Manager.Instance.playerGrid = occupied;
+
                 this.Close();
             }
             else

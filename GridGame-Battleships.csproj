@@ -76,6 +76,9 @@
     <Compile Include="ShipControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <EmbeddedResource Include="GameEnd.resx">
+      <DependentUpon>GameEnd.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Menu.resx">
       <DependentUpon>Menu.cs</DependentUpon>
     </EmbeddedResource>

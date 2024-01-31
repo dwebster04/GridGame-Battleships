@@ -16,5 +16,15 @@ namespace GridGame_Battleships
         {
             InitializeComponent();
         }
+
+        private void GameEnd_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

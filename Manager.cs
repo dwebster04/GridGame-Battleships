@@ -10,11 +10,13 @@ public class Manager
 
     // Game state property
     public int GameState { get; set; }
+    public int[,] playerGrid = new int[7, 7];
 
     // Private constructor to enforce singleton pattern
     private Manager()
     {
-        GameState = 0; // Set default initial state, 0 menu, 1 game, 2 exit
+        GameState = 0; // Set default initial state, 0 menu, 1 game, 2 exit, 3 gameplay
+        
     }
 
     // Singleton instance
