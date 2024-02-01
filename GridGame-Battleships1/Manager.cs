@@ -17,7 +17,7 @@ public class Manager
     // Private constructor to enforce singleton pattern
     private Manager()
     {
-        GameState = 0; // Set default initial state, 0 menu, 1 game, 2 exit, 3 gameplay
+        GameState = 0; // Set default initial state, 0 menu, 1 game, 2 exit, 3 gameplay, 4page to ask if they'd like to play again
         
     }
 

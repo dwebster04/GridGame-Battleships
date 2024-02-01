@@ -46,6 +46,11 @@ namespace GridGame_Battleships
                 {
                     Application.Run(new GAMEPLAY());
                 }
+
+                if (Manager.Instance.GameState == 4)
+                {
+                    Application.Run(new FINISHED());
+                }
             }
 
         }

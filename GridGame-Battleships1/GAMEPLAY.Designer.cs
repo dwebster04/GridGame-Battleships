@@ -39,6 +39,7 @@ namespace GridGame_Battleships
         private Button btnQuit; // declare the Quit button
         private Button btnSubmit; // declare the submit button
         private Button btnInstruction; // declare the instructions button
+        private bool validSelect = false; // used for selecting places on the computer's board
 
         public int[,] computerOccupied = new int[7, 7]; // used to represent where the computer's ships are 
         public int[,] computerGuesses = new int[7, 7]; // used to represent where the computer has guessed the player's ships are
@@ -190,7 +191,7 @@ namespace GridGame_Battleships
                     computersBoard[x, y].SetBounds(175 + (30 * x), 35 + (30 * y), 30, 30);
                     computersBoard[x, y].BackColor = Color.Gray;
 
-                    //computersBoard[x, y].Click += new EventHandler(this.computersBoard_Click);
+                    computersBoard[x, y].Click += new EventHandler(this.computersBoard_Click);
                     Controls.Add(computersBoard[x, y]);
                 }
             }
@@ -221,12 +222,12 @@ namespace GridGame_Battleships
 
             // determine whether the user hit a ship
 
-
+            
 
             // computer's turn to guess
             computerPlayer_turn();
             
-
+            
             
         }
 
@@ -262,91 +263,234 @@ namespace GridGame_Battleships
                 }
             }
 
-            // assign the computer's ships randomly
-            // to determine if a ship is vertical (0) or horizontal (1)
-            Random direction = new Random();
-         
-            Random rd = new Random();
-            int rand_num = rd.Next();
-            
+            // assign the computer's ships randomly and records in computerOccupied
+            /*
+            // ship4 - covers 5 squares
+            Random direction = new Random(); // randomly determines position --> vertical 0, horizontal 1
+            Random p = new Random(); // randomly determines a point, used for calculating coordinate
+            //randomly generate first coordinate of ship4;
+            int s4x1 = p.Next(1, 7);
+            int s4y1 = p.Next(1, 7);
+            // calculate all other coordinates of the boat;
+            int s4d = direction.Next(0, 1);
 
-            // ship1 --> covers 2 squares
-            int s1x1 = rd.Next(1, 7);
-            int s1y1 = rd.Next(1, 7);
-            int s1x2;
-            int s1y2;
-            // ship1's first coordinate is (s1x1, s1y1)
-            
-            int ship1d = direction.Next(0, 1);
-            // find out ship1's other coordinate
-            if (ship1d == 0)
+            int s4x2, s4x3, s4x4, s4x5; // initialise ship4's x coordinates
+            s4x2 = s4x1;
+            s4x3 = s4x1;
+            s4x4 = s4x1;
+            s4x5 = s4x1;
+            int s4y2, s4y3, s4y4, s4y5; // initialise ship4's y coordinates
+            s4y2 = s4y1;
+            s4y3 = s4y1;
+            s4y4 = s4y1;
+            s4y5 = s4y1;
+            if (s4d == 0)
             {
-                s1x2 = s1x1;
-                // vertical - change y
-                if (s1x1 == 1)
-                {
-                    s1y2 = 2;
-                } else if (s1x1 == 7)
-                {
-                    s1y2 = 6;
-                } else
-                {
-                    s1y2 = s1y1 + 1;
-                }
+                // vertical - only y coordinate changes
 
+                switch (s4y1)
+                {
+                    case 1:
+                        // s4y1 = 1, increase all 
+                        s4y2 = s4y1 + 1;
+                        s4y3 = s4y1 + 2;
+                        s4y4 = s4y1 + 3;
+                        s4y5 = s4y1 + 4;
+                        break;
+                    case 2:
+                        // s4y1 = 2, increase all 
+                        s4y2 = s4y1 + 1;
+                        s4y3 = s4y1 + 2;
+                        s4y4 = s4y1 + 3;
+                        s4y5 = s4y1 + 4;
+                        break;
+                    case 3:
+                        // s4y1 = 3, increase all
+                        s4y2 = s4y1 + 1;
+                        s4y3 = s4y1 + 2;
+                        s4y4 = s4y1 + 3;
+                        s4y5 = s4y1 + 4;
+                        break;
+                    case 4:
+                        // s4y1 = 4, 2 above 2 below
+                        s4y2 = s4y1 + 1;
+                        s4y3 = s4y1 + 2;
+                        s4y4 = s4y1 - 2;
+                        s4y5 = s4y1 - 1;
+                        break;
+                    case 5:
+                        // s4y1 = 5
+                        s4y2 = s4y1 - 1;
+                        s4y3 = s4y1 - 2;
+                        s4y4 = s4y1 - 3;
+                        s4y5 = s4y1 - 4;
+                        break;
+                    case 6:
+                        // s4y1 = 6
+                        s4y2 = s4y1 - 1;
+                        s4y3 = s4y1 - 2;
+                        s4y4 = s4y1 - 3;
+                        s4y5 = s4y1 - 4;
+                        break;
+                    case 7:
+                        // s4y1 = 7, decrease all
+                        s4y2 = s4y1 - 1;
+                        s4y3 = s4y1 - 2;
+                        s4y4 = s4y1 - 3;
+                        s4y5 = s4y1 - 4;
+                        break;
+
+                }
             } else
             {
-                // horizontal - change x
-                s1y2 = s1y1;
-                if (s1x1 == 1)
+                // horizontal - only x coordinate changes
+
+                switch (s4x1)
                 {
-                    s1x2 = 2;
-                }
-                else if (s1x1 == 7)
-                {
-                    s1x2 = 6;
-                }
-                else
-                {
-                    s1x2 = s1x1 + 1;
+                    case 1:
+                        // s4x1 = 1, increase all 
+                        s4x2 = s4x1 + 1;
+                        s4x3 = s4x1 + 2;
+                        s4x4 = s4x1 + 3;
+                        s4x5 = s4x1 + 4;
+                        break;
+                    case 2:
+                        // s4x1 = 2, increase all 
+                        s4x2 = s4x1 + 1;
+                        s4x3 = s4x1 + 2;
+                        s4x4 = s4x1 + 3;
+                        s4x5 = s4x1 + 4;
+                        break;
+                    case 3:
+                        // s4x1 = 3, increase all
+                        s4x2 = s4x1 + 1;
+                        s4x3 = s4x1 + 2;
+                        s4x4 = s4x1 + 3;
+                        s4x5 = s4x1 + 4;
+                        break;
+                    case 4:
+                        // s4x1 = 4, 2 left 2 right
+                        s4x2 = s4x1 + 1;
+                        s4x3 = s4x1 + 2;
+                        s4x4 = s4x1 - 2;
+                        s4x5 = s4x1 - 1;
+                        break;
+                    case 5:
+                        // s4x1 = 5
+                        s4x2 = s4x1 - 1;
+                        s4x3 = s4x1 - 2;
+                        s4x4 = s4x1 - 3;
+                        s4x5 = s4x1 - 4;
+                        break;
+                    case 6:
+                        // s4x1 = 6
+                        s4x2 = s4x1 - 1;
+                        s4x3 = s4x1 - 2;
+                        s4x4 = s4x1 - 3;
+                        s4x5 = s4x1 - 4;
+                        break;
+                    case 7:
+                        // s4x1 = 7
+                        s4x2 = s4x1 - 1;
+                        s4x3 = s4x1 - 2;
+                        s4x4 = s4x1 - 3;
+                        s4x5 = s4x1 - 4;
+                        break;
                 }
             }
-            // add the coordinates to computerOccupied
-            computerOccupied[s1x1, s1y1] = 1;
-            computerOccupied[s1x2, s1y2] = 1;
-            
+            // add the ships coordinates to computerOccupied --> no need to check occupation as no ship has been placed on the board yet
+            computerOccupied[s4x1, s4y1] = 1;
+            computerOccupied[s4x2, s4y2] = 1;
+            computerOccupied[s4x3, s4y3] = 1;
+            computerOccupied[s4x4, s4y4] = 1;
+            computerOccupied[s4x5, s4y5] = 1;
 
 
-            // ship2 --> covers 3 squares
-            int s2x1 = rd.Next(1, 7);
-            int s2y1 = rd.Next(1, 7);
+            // ship3 - covers 4 squares
+            int s3x1 = p.Next(1, 7);
+            int s3y1 = p.Next(1, 7);
             // check that this point isn't already occupied
-            while (computerOccupied[s2x1, s2y1] != 0)
+            while (computerOccupied[s3x1, s3y1] == 1)
             {
-                // guess again until it is a position that isn't occupied
-                s2x1 = rd.Next(1, 7);
-                s2y1 = rd.Next(1, 7);
+                // only enters while loop if the coordinate is already occupied
+                s3x1 = p.Next(1, 7);
+                s3y1 = p.Next(1, 7);
             }
-            // ship2's first coordinate is (s2x1, s2y1)
-            int s2x2, s2x3;
-            int s2y2, s2y3;
-            int ship2d = direction.Next(0, 1);
-            if (ship2d == 0)
+            int s3x2, s3x3, s3x4; // initialise ship4's x coordinates
+            s3x2 = s4x1;
+            s3x3 = s4x1;
+            s3x4 = s4x1;
+            int s3y2, s3y3, s3y4; // initialise ship4's y coordinates
+            s3y2 = s4y1;
+            s3y3 = s4y1;
+            s3y4 = s4y1;
+
+            switch (s3x1)
             {
-                // vertical
-                
-                
-            } else
-            {
-                // horizontal
+                case 1:
+                    // if s3x1=1
+                    
+                    
+                    break;
+                case 2:
+                    // if s3x1=2
+                    break;
+                case 3:
+                    // if s3x1=3
+                    break;
+                case 4:
+                    // if s3x1=4
+                    break;
+                case 5:
+                    // if s3x1=5
+                    break;
+                case 6:
+                    // if s3x1=6
+                    break;
+                case 7:
+                    // if s3x1=7
+                    break;
             }
 
-
-            // ship3 --> covers 4 squares
             
 
-            // ship4 --> covers 5 squares
-            
+
+
+            // ship2 - covers 3 squares
+            int s2x1 = p.Next(1, 7);
+            int s2y1 = p.Next(1, 7);
+            // check that this point isn't already occupied
+            while (computerOccupied[s2x1, s2y1] == 1)
+            {
+                // only enters while loop if the coordinate is already occupied
+                s2x1 = p.Next(1, 7);
+                s2y1 = p.Next(1, 7);
+            }
+
+            int s2x2, s2x3; // initialise ship4's x coordinates
+            s2x2 = s4x1;
+            s2x3 = s4x1;
+            int s2y2, s2y3; // initialise ship4's y coordinates
+            s2y2 = s4y1;
+            s2y3 = s4y1;
+
+            // ship1 - covers 2 squares
+            int s1x1 = p.Next(1, 7);
+            int s1y1 = p.Next(1, 7);
+            // check that this point isn't already occupied
+            while (computerOccupied[s2x1, s2y1] == 1)
+            {
+                // only enters while loop if the coordinate is already occupied
+                s1x1 = p.Next(1, 7);
+                s1y1 = p.Next(1, 7);
+            }
+
+            int s1x2; // initialise ship4's x coordinates
+            s1x2 = s4x1;
+            int s1y2; // initialise ship4's y coordinates
+            s1y2 = s4y1;
+            */
+
         }
 
         private void computerPlayer_turn()
@@ -383,6 +527,33 @@ namespace GridGame_Battleships
                 
             }
 
+        }
+
+        private bool playerWon()
+        {
+            // function to check if a player has won yet
+            if (playerHits == 14)
+            {
+                // return true if player has won
+                return true; ;
+            } else
+            {
+                return false;
+            }
+        }
+
+        private bool computerWon()
+        {
+            // function to check if the computer has won yet
+            if (computerHits == 14)
+            {
+                // return true if the computer has won
+                return true; ;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
