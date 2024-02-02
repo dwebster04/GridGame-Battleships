@@ -36,6 +36,8 @@ namespace GridGame_Battleships
         public string[] shipNames = new string[] { "Destroyer", "Submarine", "Battleship", "Carrier" };
         private Color[] shipColors = { Color.DarkMagenta, Color.Orange, Color.Green, Color.Blue };
 
+        private int[,] buttonSelected = new int[7, 7];
+
         private Button btnQuit; // declare the Quit button
         private Button btnSubmit; // declare the submit button
         private Button btnInstruction; // declare the instructions button
@@ -54,6 +56,15 @@ namespace GridGame_Battleships
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(410, 450); // 175 + 210 + 25
             this.Text = "GAMEPLAY";
+
+            // set selected to none on start
+            for (int x = 0; x < 7; x++)
+            {
+                for (int y = 0; y < 7; y++)
+                {
+                    buttonSelected[x, y] = 0;
+                }
+            }
 
 
             // 
@@ -190,6 +201,7 @@ namespace GridGame_Battleships
                     computersBoard[x, y] = new Button();
                     computersBoard[x, y].SetBounds(175 + (30 * x), 35 + (30 * y), 30, 30);
                     computersBoard[x, y].BackColor = Color.Gray;
+                    computersBoard[x, y].Text = Convert.ToString((x + 1) + "," + (y + 1));
 
                     computersBoard[x, y].Click += new EventHandler(this.computersBoard_Click);
                     Controls.Add(computersBoard[x, y]);
@@ -245,13 +257,82 @@ namespace GridGame_Battleships
 
         private void computersBoard_Click(object sender, EventArgs e)
         {
-            // the place on the grid the player chooses is highlighted in red
+            // Reset all buttons to grey
+            ResetComputerBoardButtons();
+
+            // Highlight the selected button in red
             Button clickedButton = (Button)sender;
-            Debug.WriteLine(clickedButton.Text);
             clickedButton.BackColor = Color.Red;
 
+            // Update the buttonSelected array
+            UpdateButtonSelectedArray(clickedButton);
         }
-        
+
+        private void ResetComputerBoardButtons()
+        {
+            // Reset all computer board buttons to grey
+            foreach (Button button in computersBoard)
+            {
+                button.BackColor = Color.Gray;
+            }
+        }
+
+        private void UpdateButtonSelectedArray(Button clickedButton)
+        {
+            // Extract coordinates from the button's text
+            string[] coordinates = clickedButton.Text.Split(',');
+
+            // Check if parsing is successful
+            if (coordinates.Length == 2 && int.TryParse(coordinates[0].Trim(), out int xCoord) && int.TryParse(coordinates[1].Trim(), out int yCoord))
+            {
+                int x = xCoord - 1;
+                int y = yCoord - 1;
+
+                // Check if the coordinates are within the valid range
+                if (x >= 0 && x < 7 && y >= 0 && y < 7)
+                {
+                    // Update buttonSelected array
+                    for (int i = 0; i < 7; i++)
+                    {
+                        for (int j = 0; j < 7; j++)
+                        {
+                            if (i == x && j == y)
+                            {
+                                buttonSelected[i, j] = 1; // Set the selected button to 1
+                            }
+                            else
+                            {
+                                buttonSelected[i, j] = 0; // Reset other buttons to 0
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    // Handle out-of-range coordinates, for example, by displaying an error message
+                    MessageBox.Show("Invalid button coordinates. Coordinates should be within the range (1,1) to (7,7).", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                // Handle parsing failure, for example, by displaying an error message
+                MessageBox.Show("Invalid button format. Cannot parse coordinates.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            
+
+            for (int x = 0; x < 7; x++)
+            {
+                for (int y = 0; y < 7; y++)
+                {
+                    
+                     Debug.Write($"({buttonSelected[y, x]}) ");
+                    
+                }
+
+                Debug.WriteLine(""); // Add a line break after each ship's coordinates
+            }
+        }
 
         private void computerPlayer_ships()
         {
