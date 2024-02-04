@@ -1,85 +1,97 @@
-﻿using System;
-using System.Diagnostics;
-using System.Drawing;
+﻿using System.Drawing;
+using System;
 using System.Windows.Forms;
+using System.Diagnostics;
+using System.Net.Sockets;
 
 namespace GridGame_Battleships
 {
     partial class GAMEPLAY
     {
-
-        // declarations
-
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
         private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
         private Label lblYour_Grid;
+
         private Label lblOpponents_Grid;
         private Button[,] playersBoard = new Button[7, 7];
         private Button[,] computersBoard = new Button[7, 7];
         private int[,] playerBoardData = Manager.Instance.playerGrid;
         private ShipControl[,] playerShipsData = Manager.Instance.playerShips;
-        private string[] shipNames = new string[] { "Destroyer", "Submarine", "Battleship", "Carrier" };
+        public string[] shipNames = new string[] { "Destroyer", "Submarine", "Battleship", "Carrier" };
         private Color[] shipColors = { Color.DarkMagenta, Color.Orange, Color.Green, Color.Blue };
-        private int[,] buttonSelected = new int[7, 7];
-        private Button btnQuit;
-        private Button btnSubmit;
-        private Button btnInstruction;
-        private bool validSelect = false;
-        public int[,] computerOccupied = new int[7, 7];
-        public int[,] computerGuesses = new int[7, 7];
-        private int playerHits = 0;
-        private int computerHits = 0;
 
+        private Button btnQuit; // declare the Quit button
+        private Button btnSubmit; // declare the submit button
+        private Button btnInstruction; // declare the instructions button
+        private bool validSelect = false; // used for selecting places on the computer's board
 
+        public int[,] computerOccupied = new int[7, 7]; // used to represent where the computer's ships are 
+        public int[,] computerGuesses = new int[7, 7]; // used to represent where the computer has guessed the player's ships are
 
+        // player/computer need 14 hits to win 
+        int playerHits = 0;
+        int computerHits = 0;
+        
         private void InitializeComponent()
         {
-            // form/window stylisation
             this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(410, 450);
+            this.ClientSize = new System.Drawing.Size(410, 450); // 175 + 210 + 25
             this.Text = "GAMEPLAY";
 
-            // Set selected to none on start
-            for (int x = 0; x < 7; x++)
-            {
-                for (int y = 0; y < 7; y++)
-                {
-                    buttonSelected[x, y] = 0;
-                }
-            }
 
-            // players grid label
+            // 
+            // lblYour_Grid
+            // 
             lblYour_Grid = new Label();
             lblYour_Grid.Location = new System.Drawing.Point(25, 10);
             lblYour_Grid.Size = new System.Drawing.Size(140, 20);
             lblYour_Grid.BackColor = Color.MediumOrchid;
             lblYour_Grid.Text = "YOUR GRID";
-            lblYour_Grid.TextAlign = ContentAlignment.MiddleCenter;
-            lblYour_Grid.ForeColor = Color.White;
-            Controls.Add(lblYour_Grid);
+            lblYour_Grid.TextAlign = ContentAlignment.MiddleCenter; // Center the text
+            lblYour_Grid.ForeColor = Color.White; // Set font color to white
+            Controls.Add(lblYour_Grid); // Add the Label to the form
 
-            // opponents grid label
+            // 
+            // lblOpponents_Grid
+            // 
             lblOpponents_Grid = new Label();
             lblOpponents_Grid.Location = new System.Drawing.Point(175, 10);
             lblOpponents_Grid.Size = new System.Drawing.Size(210, 20);
             lblOpponents_Grid.BackColor = Color.Crimson;
             lblOpponents_Grid.Text = "OPPONENTS GRID";
-            lblOpponents_Grid.TextAlign = ContentAlignment.MiddleCenter;
-            lblOpponents_Grid.ForeColor = Color.White;
-            Controls.Add(lblOpponents_Grid);
+            lblOpponents_Grid.TextAlign = ContentAlignment.MiddleCenter; // Center the text
+            lblOpponents_Grid.ForeColor = Color.White; // Set font color to white
+            Controls.Add(lblOpponents_Grid); // Add the Label to the form
 
-            // instruction button
+            // create and initialise the instruction button
             btnInstruction = new Button();
             btnInstruction.Text = "Instructions";
             btnInstruction.Size = new Size(100, 50);
             btnInstruction.Location = new Point(25, 300);
-            btnInstruction.Click += new EventHandler(this.btnInstruction_Click);
+            btnInstruction.Click += new EventHandler(this.btnInstruction_Click); // associate click event
             btnInstruction.MouseEnter += new EventHandler(this.Btn_MouseEnter);
             btnInstruction.MouseLeave += new EventHandler(this.Btn_MouseLeave);
             btnInstruction.BackColor = Color.SkyBlue;
             Controls.Add(btnInstruction);
 
-            // submit button
+            // create and initialise the submit button
             btnSubmit = new Button();
             btnSubmit.Text = "Submit";
             btnSubmit.Size = new Size(100, 50);
@@ -90,7 +102,7 @@ namespace GridGame_Battleships
             btnSubmit.BackColor = Color.SkyBlue;
             Controls.Add(btnSubmit);
 
-            // quit button
+            // create and initialise the quit button
             btnQuit = new Button();
             btnQuit.Text = "Quit Game";
             btnQuit.Size = new Size(100, 50);
@@ -101,20 +113,12 @@ namespace GridGame_Battleships
             btnQuit.BackColor = Color.SkyBlue;
             Controls.Add(btnQuit);
 
-            // this function creates the grid buttons
-            CreateButtons();
-
-            // ??? function to assign where the opponents ships are
-            computerPlayer_ships();
-
-            // testing to see if will update
-            buttonSelected[1, 1] = 2;
-            computersBoard[1, 1].BackColor = Color.Black;
 
 
-            // Check to see if players ships locations are correct
-            Debug.WriteLine("GAMEPLAY");
+            CreateButtons(); // creates buttons 
+            computerPlayer_ships(); // set the position of the computers ships 
 
+            Debug.WriteLine("GAMEPLAY"); // Add a line break after each ship's coordinates
             for (int i = 0; i < 4; i++)
             {
                 Debug.Write($"{shipNames[i]} is located at: ");
@@ -130,10 +134,10 @@ namespace GridGame_Battleships
                     }
                 }
 
-                Debug.WriteLine("");
+                Debug.WriteLine(""); // Add a line break after each ship's coordinates
             }
 
-            // set all of computer guesses to 0 meaning they have not guessed in any part of the grid
+            // initialise all values of an array to 0 - will be used to store the coordinates of where the computer has guessed a player's ships are
             for (int i = 0; i < 7; i++)
             {
                 for (int j = 0; j < 7; j++)
@@ -143,69 +147,68 @@ namespace GridGame_Battleships
             }
         }
 
-        // creates the grids
         private void CreateButtons()
         {
-            // players grid
             for (int x = 0; x < 7; x++)
             {
                 for (int y = 0; y < 7; y++)
                 {
                     playersBoard[x, y] = new Button();
-                    playersBoard[x, y].SetBounds(25 + (20 * x), 35 + (20 * y), 20, 20); // each button is 20 by 20
+                    playersBoard[x, y].SetBounds(25 + (20 * x), 35 + (20 * y), 20, 20);
 
-                    if (playerBoardData[x, y] == 0) // if no ship is in this part of the grid
+                    if (playerBoardData[x, y] == 0)
                     {
                         playersBoard[x, y].BackColor = Color.PowderBlue;
                     }
-                    else if (playerBoardData[x, y] == 1) // if there is a ship in this part of the grid
+                    else if (playerBoardData[x, y] == 1)
                     {
                         playersBoard[x, y].BackColor = Color.MediumOrchid;
 
-                        for (int i = 0; i < 4; i++) // loop through ships
+                        // Assign the color of the corresponding ship
+                        for (int i = 0; i < 4; i++)
                         {
-                            if (playerShipsData[i, 0].boardLocation[x, y] == 1) // find the ship that has the same location as the button
+                            if (playerShipsData[i, 0].boardLocation[x, y] == 1)
                             {
-                                playersBoard[x, y].BackColor = shipColors[i]; // set the colour to the colour of the corresponding ship (this is for the user to distinguish their differnt ships
-                                break;
+                                playersBoard[x, y].BackColor = shipColors[i];
+                                break; // Stop searching once you find the ship
                             }
                         }
                     }
 
-                    //playersBoard[x, y].Text = Convert.ToString((x + 1) + "," + (y + 1));
-                    //playersBoard[x, y].Click += new EventHandler(this.playersBoard_Click);
+                    playersBoard[x, y].Text = Convert.ToString((x + 1) + "," + (y + 1));
+                    playersBoard[x, y].Click += new EventHandler(this.playersBoard_Click);
+
+                    // Add the button to the ShipControl
                     Controls.Add(playersBoard[x, y]);
                 }
             }
 
-            // create opponents grid
             for (int x = 0; x < 7; x++)
             {
                 for (int y = 0; y < 7; y++)
                 {
                     computersBoard[x, y] = new Button();
-                    computersBoard[x, y].SetBounds(175 + (30 * x), 35 + (30 * y), 30, 30); // each button in the grid is 30x30
+                    computersBoard[x, y].SetBounds(175 + (30 * x), 35 + (30 * y), 30, 30);
                     computersBoard[x, y].BackColor = Color.Gray;
-                    computersBoard[x, y].Text = Convert.ToString((x + 1) + "," + (y + 1));
+
                     computersBoard[x, y].Click += new EventHandler(this.computersBoard_Click);
                     Controls.Add(computersBoard[x, y]);
                 }
             }
         }
 
-        // used for submit, quit, and instructions
         void Btn_MouseEnter(object sender, EventArgs e)
         {
+            // change the button colour when the mouse enters
             ((Button)sender).BackColor = System.Drawing.Color.Lavender;
         }
 
-        // used for submit, quit, and instructions
         void Btn_MouseLeave(object sender, EventArgs e)
         {
+            // change the button colour back to the orignal once the mouse has left
             ((Button)sender).BackColor = System.Drawing.Color.SkyBlue;
         }
 
-        // display a message box of instructions when the instruction button is clicked
         private void btnInstruction_Click(object sender, EventArgs e)
         {
             // display a textbox explaining the game's instructions
@@ -213,29 +216,30 @@ namespace GridGame_Battleships
             MessageBox.Show(message, "Instructions", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        // when this is pressed the user is submitting there guess of where the opponets ships are
         private void btnSubmit_Click(object sender, EventArgs e)
         {
             // process users guess
 
-            /*
-             * here write code so when submit is pressed it checks theres a button selected and hasnt been already selected
-             * then changes colour to according to if it hit a ship or not, for example black if it is a miss, orange for a hit
-             *  could add an explosion sound to meet further extension requirement
-             */
-
             // determine whether the user hit a ship
 
-
+            
 
             // computer's turn to guess
             computerPlayer_turn();
 
+            // if the computer or player has won
+            if ((playerWon() == true) || (computerWon() == true))
+            {
+                Debug.WriteLine(((Button)sender).Text);
+                Manager.Instance.GameState = 4;
+                this.Close();
+            }
 
-
+            
+            
+            
         }
 
-        // return to menu when quit button is clicked
         private void btnQuit_Click(object sender, EventArgs e)
         {
             Debug.WriteLine(((Button)sender).Text);
@@ -243,92 +247,20 @@ namespace GridGame_Battleships
             this.Close();
         }
 
-        // THIS FUNCTION NOT NEEDED
         private void playersBoard_Click(object sender, EventArgs e)
         {
             Debug.WriteLine(((Button)sender).Text);
         }
 
-        // when pressing the opponets grid user can select their guess of where the opponents ships are
         private void computersBoard_Click(object sender, EventArgs e)
         {
-            // Reset all buttons to grey
-            ResetComputerBoardButtons();
-
-            // Highlight the selected button in red
+            // the place on the grid the player chooses is highlighted in red
             Button clickedButton = (Button)sender;
+            Debug.WriteLine(clickedButton.Text);
             clickedButton.BackColor = Color.Red;
 
-            // Update the buttonSelected array
-            UpdateButtonSelectedArray(clickedButton);
         }
-
-        private void ResetComputerBoardButtons()
-        {
-            // Reset all computer board buttons to grey
-            foreach (Button button in computersBoard)
-            {
-                button.BackColor = Color.Gray;
-            }
-        }
-
-        private void UpdateButtonSelectedArray(Button clickedButton)
-        {
-            // get coordinates from the button
-            string[] coordinates = clickedButton.Text.Split(',');
-
-            // convert string coordinates to integers
-            int xCoord, yCoord;
-            int xC = 0, yC = 0;
-            if (coordinates.Length == 2 && int.TryParse(coordinates[0], out xCoord) && int.TryParse(coordinates[1], out yCoord))
-            {
-                xC = xCoord - 1;
-                yC = yCoord - 1;
-            }
-
-            // Check if the button is already guessed
-            if (buttonSelected[xC, yC] == 2)
-            {
-                MessageBox.Show("You've already guessed in this square.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return; // Do not proceed with updating the array and color
-            }
-
-            // Check if the button is already selected by the computer
-            if (buttonSelected[xC, yC] == 1)
-            {
-                return; // Do not proceed with updating the array and color
-            }
-
-            // Update buttonSelected array and color only if it's not already guessed or selected by the computer
-            if (buttonSelected[xC, yC] != 2)
-            {
-                // update buttonSelected array
-                for (int i = 0; i < 7; i++)
-                {
-                    for (int j = 0; j < 7; j++)
-                    {
-                        if (i == xC && j == yC)
-                        {
-                            buttonSelected[i, j] = 2; // set the selected button to 2
-                        }
-                    }
-                }
-
-                // update color
-                clickedButton.BackColor = Color.Black;
-            }
-
-            // check to see if button on grid matches with buttonSelected array
-            for (int x = 0; x < 7; x++)
-            {
-                for (int y = 0; y < 7; y++)
-                {
-                    Debug.Write($"({buttonSelected[y, x]}) ");
-                }
-
-                Debug.WriteLine(""); // add a line break
-            }
-        }
+        
 
         private void computerPlayer_ships()
         {
@@ -339,6 +271,23 @@ namespace GridGame_Battleships
                     computerOccupied[i, j] = 0;
                 }
             }
+
+            // ship4 - covers 5 squares
+            bool ship4 = false;
+            while (ship4 == false)
+            {
+                // randomly assign a location to ship4 on the grid 
+                Random p = new Random(); // randomly determines a point, used for calculating coordinate
+
+
+            }
+
+            // ship3 - covers 4 squares
+
+            // ship2 - covers 3 squares
+
+            // ship1 - covers 2 squares
+
 
             // assign the computer's ships randomly and records in computerOccupied
             /*
