@@ -43,6 +43,7 @@ namespace GridGame_Battleships
 
         public int[,] computerOccupied = new int[7, 7]; // used to represent where the computer's ships are 
         public int[,] computerGuesses = new int[7, 7]; // used to represent where the computer has guessed the player's ships are
+        public int[,] userGuesses = new int[7, 7]; // used to represent where the user has guessed (0 not guessed/gray, 1 is selected before submit/red, 2 is miss/black, 3 is hit/yellow
 
         // player/computer need 14 hits to win 
         int playerHits = 0;
@@ -116,7 +117,8 @@ namespace GridGame_Battleships
 
 
             CreateButtons(); // creates buttons 
-            computerPlayer_ships(); // set the position of the computers ships 
+            /* 
+             * computerPlayer_ships();  set the position of the computers ships */
 
             Debug.WriteLine("GAMEPLAY"); // Add a line break after each ship's coordinates
             for (int i = 0; i < 4; i++)
@@ -190,9 +192,13 @@ namespace GridGame_Battleships
                     computersBoard[x, y] = new Button();
                     computersBoard[x, y].SetBounds(175 + (30 * x), 35 + (30 * y), 30, 30);
                     computersBoard[x, y].BackColor = Color.Gray;
+                    // Set the Text property to the location string
+                    computersBoard[x, y].Text = $"{x + 1},{y + 1}";
 
                     computersBoard[x, y].Click += new EventHandler(this.computersBoard_Click);
                     Controls.Add(computersBoard[x, y]);
+
+                    userGuesses[x, y] = 0;
                 }
             }
         }
@@ -255,9 +261,46 @@ namespace GridGame_Battleships
         private void computersBoard_Click(object sender, EventArgs e)
         {
             // the place on the grid the player chooses is highlighted in red
+
             Button clickedButton = (Button)sender;
-            Debug.WriteLine(clickedButton.Text);
-            clickedButton.BackColor = Color.Red;
+            int buttonX = 0; int buttonY = 0;
+            string[] coordinates = clickedButton.Text.Split(',');
+            if (coordinates.Length == 2 && int.TryParse(coordinates[0], out buttonX) && int.TryParse(coordinates[1], out buttonY))
+            {
+                // Now, x and y contain the button's position on the grid
+                Debug.WriteLine($"Button Clicked - X: {buttonX+1}, Y: {buttonY+1}");
+            }
+
+                if (clickedButton.BackColor == System.Drawing.Color.Black || clickedButton.BackColor == System.Drawing.Color.Yellow)
+            {
+                MessageBox.Show("You've already guessed in this square.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return; // Do not proceed
+            }
+
+            if (clickedButton.BackColor == System.Drawing.Color.Gray)
+            {
+                
+
+                for(int x = 0; x < 7; x++)
+                {
+                    for(int y =0; y < 7; y++)
+                    {
+                        if (computersBoard[x, y].BackColor != System.Drawing.Color.Black || computersBoard[x, y].BackColor != System.Drawing.Color.Yellow)
+                        {
+                            computersBoard[x, y].BackColor = System.Drawing.Color.Gray;
+                        }
+
+                        if(x+1 == buttonX && y+1 == buttonY)
+                        {
+                            Debug.WriteLine(clickedButton.Text);
+                            clickedButton.BackColor = Color.Red;
+                        }
+
+                                             
+                           
+                    }
+                }
+            }
 
         }
 
