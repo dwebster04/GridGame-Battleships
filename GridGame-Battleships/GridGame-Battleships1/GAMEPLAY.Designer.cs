@@ -147,6 +147,9 @@ namespace GridGame_Battleships
                     computerGuesses[i, j] = 0;
                 }
             }
+
+            computersBoard[1, 3].BackColor = System.Drawing.Color.Yellow;
+            computersBoard[6, 5].BackColor = System.Drawing.Color.Black;
         }
 
         private void CreateButtons()
@@ -285,15 +288,17 @@ namespace GridGame_Battleships
                 {
                     for(int y =0; y < 7; y++)
                     {
-                        if (computersBoard[x, y].BackColor != System.Drawing.Color.Black || computersBoard[x, y].BackColor != System.Drawing.Color.Yellow)
+                        if (computersBoard[x, y].BackColor != System.Drawing.Color.Black && computersBoard[x, y].BackColor != System.Drawing.Color.Yellow)
                         {
                             computersBoard[x, y].BackColor = System.Drawing.Color.Gray;
+                            userGuesses[x, y] = 0;
                         }
 
                         if(x+1 == buttonX && y+1 == buttonY)
                         {
                             Debug.WriteLine(clickedButton.Text);
                             clickedButton.BackColor = Color.Red;
+                            userGuesses[x, y] = 1;
                         }
 
                                              
