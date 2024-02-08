@@ -117,8 +117,7 @@ namespace GridGame_Battleships
 
 
             CreateButtons(); // creates buttons 
-            /* 
-             * computerPlayer_ships();  set the position of the computers ships */
+           computerPlayer_ships();  //set the position of the computers ships */
 
             Debug.WriteLine("GAMEPLAY"); // Add a line break after each ship's coordinates
             for (int i = 0; i < 4; i++)
@@ -148,8 +147,7 @@ namespace GridGame_Battleships
                 }
             }
 
-            computersBoard[1, 3].BackColor = System.Drawing.Color.Yellow;
-            computersBoard[6, 5].BackColor = System.Drawing.Color.Black;
+           
         }
 
         private void CreateButtons()
@@ -227,26 +225,67 @@ namespace GridGame_Battleships
 
         private void btnSubmit_Click(object sender, EventArgs e)
         {
-            // process users guess
+            // Check if there is a guess
+            bool guess = false;
+            for (int x = 0; x < 7; x++)
+            {
+                for (int y = 0; y < 7; y++)
+                {
+                    if (userGuesses[x, y] == 1) // If the user has placed a guess
+                    {
+                        guess = true;
+                        break;
+                    }
+                }
+                if (guess) break;
+            }
 
-            // determine whether the user hit a ship
+            if (!guess)
+            {
+                MessageBox.Show("Please select a square before submitting.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
-            
+            // Process the user's guess
+            for (int x = 0; x < 7; x++)
+            {
+                for (int y = 0; y < 7; y++)
+                {
+                    if (userGuesses[x, y] == 1) // If the user has placed a guess
+                    {
+                        // Check if the opponent has a ship in that square
+                        if (computerOccupied[x, y] == 1)
+                        {
+                            computersBoard[x, y].BackColor = Color.Yellow; // Change color to yellow for a hit
+                            userGuesses[x, y] = 1;
+                            playerHits++; // Increase the player's hit count
+                        }
+                        else
+                        {
+                            computersBoard[x, y].BackColor = Color.Black; // Change color to black for a miss
+                            userGuesses[x, y] = 2;
+                        }
 
-            // computer's turn to guess
+                        // Disable the button after the guess is processed
+                        computersBoard[x, y].Enabled = false;
+
+                        // Clear the user's guess so that the user can make another guess
+                        
+                    }
+                }
+            }
+
+            // Computer's turn to guess
             computerPlayer_turn();
 
-            // if the computer or player has won
-            if ((playerWon() == true) || (computerWon() == true))
+            // Check if either the player or the computer has won
+            if (playerWon() || computerWon())
             {
-                Debug.WriteLine(((Button)sender).Text);
+                string winner = playerWon() ? "Player" : "Computer";
+                MessageBox.Show($"{winner} has won the game!", "Game Over", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Manager.Instance.GameState = 4;
                 this.Close();
             }
-
-            
-            
-            
         }
 
         private void btnQuit_Click(object sender, EventArgs e)
@@ -311,326 +350,79 @@ namespace GridGame_Battleships
 
         private void shipPosition(int length)
         {
-            Random p = new Random(); // used for randomly determining a point, used for calculating coordinate
-            Random d = new Random(); // used for randomly determing the ship's direction
-            bool check = true;
-            while (check == true)
+            Random random = new Random();
+            bool valid = false;
+
+            while (!valid)
             {
-                // randomly generate a starting point 
-                int x1 = p.Next(1, 7);
-                int y1 = p.Next(1, 7);
+                int startX = random.Next(7); // Generate random X coordinate
+                int startY = random.Next(7); // Generate random Y coordinate
+                int direction = random.Next(4); // Generate random direction (0: up, 1: right, 2: down, 3: left)
 
-                // check that this point isn't occupied already
-                while (computerOccupied[x1, y1] == 1)
+                // Check if the ship can be placed in the chosen direction
+                bool canPlaceShip = true;
+                for (int i = 0; i < length; i++)
                 {
-                    // while this point is occupied on the board, choose another
-                    x1 = p.Next(1, 7);
-                    y1 = p.Next(1, 7);
-                }
+                    int newX = startX;
+                    int newY = startY;
 
-                // choose direction randomly:
-                int direction = d.Next(0, 3);
-                bool valid = false;
-                int x2, y2, count;
-
-                switch (direction)
-                {
-                    case 0:
-                        // up
-                        // check if all coordinates in this direction are valid 
-                        count = 0;
-                        for (int k = 0; k < length + 1; k++)
-                        {
-                            y2 = y1 - k;
-                            if (y2 < 0)
-                            {
-                                // if y2 is less than 0 than it's out of bounds
-                                break;
-                            }
-
-                            // check that (x1, y2) isn't occupied
-                            if (computerOccupied[x1, y2] == 1)
-                            {
-                                // coordinate is already occupied
-                                break;
-                            }
-
-                            count++;
-
-                            if (count == length)
-                            {
-                                // all coordinates are valid, add to the board
-                                for (int m = 0; m < length; m++)
-                                {
-                                    y2 = y1 - k;
-                                    computerOccupied[x1, y2] = 1;
-                                }
-                                valid = true;
-                            }
-                        }
-
-                        break;
-
-                    case 1:
-                        // right
-                        count = 0;
-                        for (int k = 0; k < length + 1; k++)
-                        {
-                            x2 = x1 + k;
-                            if (x2 > 7)
-                            {
-                                // if x2 is more than 7 than it's out of bounds
-                                break;
-                            }
-
-                            // check that (x2, y1) isn't occupied
-                            if (computerOccupied[x2, y1] == 1)
-                            {
-                                // coordinate is already occupied
-                                break;
-                            }
-
-                            count++;
-
-                            if (count == length)
-                            {
-                                // all coordinates are valid, add to the board
-                                for (int m = 0; m < length; m++)
-                                {
-                                    x2 = x1 + k;
-                                    computerOccupied[x2, y1] = 1;
-                                }
-                                valid = true;
-                            }
-                        }
-
-                        break;
-
-                    case 2:
-                        // down
-                        count = 0;
-                        for (int k = 0; k < length + 1; k++)
-                        {
-                            y2 = y1 + k;
-                            if (y2 > 7)
-                            {
-                                // if y2 is more than 7 than it's out of bounds
-                                break;
-                            }
-
-                            // check that (x1, y2) isn't occupied
-                            if (computerOccupied[x1, y2] == 1)
-                            {
-                                // coordinate is already occupied
-                                break;
-                            }
-
-                            count++;
-
-                            if (count == length)
-                            {
-                                // all coordinates are valid, add to the board
-                                for (int m = 0; m < length; m++)
-                                {
-                                    y2 = y1 + k;
-                                    computerOccupied[x1, y2] = 1;
-                                }
-                                valid = true;
-                            }
-                        }
-
-                        break;
-
-                    case 3:
-                        // left
-                        count = 0;
-                        for (int k = 0; k < length + 1; k++)
-                        {
-                            x2 = x1 - k;
-                            if (x2 < 0)
-                            {
-                                // if x2 is less than 0 than it's out of bounds
-                                break;
-                            }
-
-                            // check that (x2, y1) isn't occupied
-                            if (computerOccupied[x2, y1] == 1)
-                            {
-                                // coordinate is already occupied
-                                break;
-                            }
-
-                            count++;
-
-                            if (count == length)
-                            {
-                                // all coordinates are valid, add to the board
-                                for (int m = 0; m < length; m++)
-                                {
-                                    x2 = x1 - k;
-                                    computerOccupied[x2, y1] = 1;
-                                }
-                            }
-                            valid = true;
-                        }
-
-                        break;
-
-                }
-
-                if (valid == false)
-                {
-                    // if the orignal direction didn't work, try a different direction until you find one that works
-                    for (int j = 1; j < 4; j++)
+                    // Adjust coordinates based on direction
+                    switch (direction)
                     {
-                        int dir = ((direction + j) % 4);
-                        switch (dir)
-                        {
-                            case 0:
-                                // up
-                                // check if all coordinates in this direction are valid 
-                                count = 0;
-                                for (int k = 0; k < length + 1; k++)
-                                {
-                                    y2 = y1 - j;
-                                    if (y2 < 0)
-                                    {
-                                        // if y2 is less than 0 than it's out of bounds
-                                        break;
-                                    }
+                        case 0: // Up
+                            newY -= i;
+                            break;
+                        case 1: // Right
+                            newX += i;
+                            break;
+                        case 2: // Down
+                            newY += i;
+                            break;
+                        case 3: // Left
+                            newX -= i;
+                            break;
+                    }
 
-                                    // check that (x1, y2) isn't occupied
-                                    if (computerOccupied[x1, y2] == 1)
-                                    {
-                                        // coordinate is already occupied
-                                        break;
-                                    }
-
-                                    count++;
-
-                                    if (count == length)
-                                    {
-                                        // all coordinates are valid, add to the board
-                                        for (int m = 0; m < length; m++)
-                                        {
-                                            y2 = y1 - k;
-                                            computerOccupied[x1, y2] = 1;
-                                        }
-                                        valid = true;
-                                    }
-                                }
-
-                                break;
-
-                            case 1:
-                                // right
-                                count = 0;
-                                for (int k = 0; k < length + 1; k++)
-                                {
-                                    x2 = x1 + k;
-                                    if (x2 > 7)
-                                    {
-                                        // if x2 is more than 7 than it's out of bounds
-                                        break;
-                                    }
-
-                                    // check that (x2, y1) isn't occupied
-                                    if (computerOccupied[x2, y1] == 1)
-                                    {
-                                        // coordinate is already occupied
-                                        break;
-                                    }
-
-                                    count++;
-
-                                    if (count == length)
-                                    {
-                                        // all coordinates are valid, add to the board
-                                        for (int m = 0; m < length; m++)
-                                        {
-                                            x2 = x1 + k;
-                                            computerOccupied[x2, y1] = 1;
-                                        }
-                                        valid = true;
-                                    }
-                                }
-
-                                break;
-
-                            case 2:
-                                // down
-                                count = 0;
-                                for (int k = 0; k < length + 1; k++)
-                                {
-                                    y2 = y1 + k;
-                                    if (y2 > 7)
-                                    {
-                                        // if y2 is more than 7 than it's out of bounds
-                                        break;
-                                    }
-
-                                    // check that (x1, y2) isn't occupied
-                                    if (computerOccupied[x1, y2] == 1)
-                                    {
-                                        // coordinate is already occupied
-                                        break;
-                                    }
-
-                                    count++;
-
-                                    if (count == length)
-                                    {
-                                        // all coordinates are valid, add to the board
-                                        for (int m = 0; m < length; m++)
-                                        {
-                                            y2 = y1 + k;
-                                            computerOccupied[x1, y2] = 1;
-                                        }
-                                        valid = true;
-                                    }
-                                }
-
-                                break;
-
-                            case 3:
-                                // left
-                                count = 0;
-                                for (int k = 0; k < length + 1; k++)
-                                {
-                                    x2 = x1 - k;
-                                    if (x2 < 0)
-                                    {
-                                        // if x2 is less than 0 than it's out of bounds
-                                        break;
-                                    }
-
-                                    // check that (x2, y1) isn't occupied
-                                    if (computerOccupied[x2, y1] == 1)
-                                    {
-                                        // coordinate is already occupied
-                                        break;
-                                    }
-
-                                    count++;
-
-                                    if (count == length)
-                                    {
-                                        // all coordinates are valid, add to the board
-                                        for (int m = 0; m < length; m++)
-                                        {
-                                            x2 = x1 - k;
-                                            computerOccupied[x2, y1] = 1;
-                                        }
-                                    }
-                                    valid = true;
-                                }
-
-                                break;
-                        }
+                    // Check if the new position is out of bounds or overlaps with another ship
+                    if (newX < 0 || newX >= 7 || newY < 0 || newY >= 7 || computerOccupied[newX, newY] == 1)
+                    {
+                        canPlaceShip = false;
+                        break;
                     }
                 }
-            }
 
+                if (canPlaceShip)
+                {
+                    // Place the ship on the board
+                    for (int i = 0; i < length; i++)
+                    {
+                        int newX = startX;
+                        int newY = startY;
+
+                        // Adjust coordinates based on direction
+                        switch (direction)
+                        {
+                            case 0: // Up
+                                newY -= i;
+                                break;
+                            case 1: // Right
+                                newX += i;
+                                break;
+                            case 2: // Down
+                                newY += i;
+                                break;
+                            case 3: // Left
+                                newX -= i;
+                                break;
+                        }
+
+                        // Mark the position as occupied by the ship
+                        computerOccupied[newX, newY] = 1;
+                    }
+
+                    valid = true; // Exit the loop since a valid position is found
+                }
+            }
         }
 
         private void computerPlayer_ships()

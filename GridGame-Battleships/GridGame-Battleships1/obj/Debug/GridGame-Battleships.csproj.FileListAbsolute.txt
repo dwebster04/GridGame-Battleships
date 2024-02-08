@@ -20,3 +20,14 @@ C:\Users\bossu\OneDrive\Desktop\Uni\sem2\AC22005\GridGame\0502_1207\GridGame-Bat
 C:\Users\bossu\OneDrive\Desktop\Uni\sem2\AC22005\GridGame\0502_1207\GridGame-Battleships\GridGame-Battleships\GridGame-Battleships1\obj\Debug\GridGame-Battleships.csproj.CoreCompileInputs.cache
 C:\Users\bossu\OneDrive\Desktop\Uni\sem2\AC22005\GridGame\0502_1207\GridGame-Battleships\GridGame-Battleships\GridGame-Battleships1\obj\Debug\GridGame-Battleships.exe
 C:\Users\bossu\OneDrive\Desktop\Uni\sem2\AC22005\GridGame\0502_1207\GridGame-Battleships\GridGame-Battleships\GridGame-Battleships1\obj\Debug\GridGame-Battleships.pdb
+C:\Users\bossu\OneDrive\Desktop\Uni\sem2\AC22005\GridGame\0802_1325\GridGame-Battleships\GridGame-Battleships\GridGame-Battleships1\bin\Debug\GridGame-Battleships.exe.config
+C:\Users\bossu\OneDrive\Desktop\Uni\sem2\AC22005\GridGame\0802_1325\GridGame-Battleships\GridGame-Battleships\GridGame-Battleships1\bin\Debug\GridGame-Battleships.exe
+C:\Users\bossu\OneDrive\Desktop\Uni\sem2\AC22005\GridGame\0802_1325\GridGame-Battleships\GridGame-Battleships\GridGame-Battleships1\bin\Debug\GridGame-Battleships.pdb
+C:\Users\bossu\OneDrive\Desktop\Uni\sem2\AC22005\GridGame\0802_1325\GridGame-Battleships\GridGame-Battleships\GridGame-Battleships1\obj\Debug\GridGame-Battleships.csproj.AssemblyReference.cache
+C:\Users\bossu\OneDrive\Desktop\Uni\sem2\AC22005\GridGame\0802_1325\GridGame-Battleships\GridGame-Battleships\GridGame-Battleships1\obj\Debug\GridGame_Battleships.GameEnd.resources
+C:\Users\bossu\OneDrive\Desktop\Uni\sem2\AC22005\GridGame\0802_1325\GridGame-Battleships\GridGame-Battleships\GridGame-Battleships1\obj\Debug\GridGame_Battleships.Menu.resources
+C:\Users\bossu\OneDrive\Desktop\Uni\sem2\AC22005\GridGame\0802_1325\GridGame-Battleships\GridGame-Battleships\GridGame-Battleships1\obj\Debug\GridGame_Battleships.Properties.Resources.resources
+C:\Users\bossu\OneDrive\Desktop\Uni\sem2\AC22005\GridGame\0802_1325\GridGame-Battleships\GridGame-Battleships\GridGame-Battleships1\obj\Debug\GridGame-Battleships.csproj.GenerateResource.cache
+C:\Users\bossu\OneDrive\Desktop\Uni\sem2\AC22005\GridGame\0802_1325\GridGame-Battleships\GridGame-Battleships\GridGame-Battleships1\obj\Debug\GridGame-Battleships.csproj.CoreCompileInputs.cache
+C:\Users\bossu\OneDrive\Desktop\Uni\sem2\AC22005\GridGame\0802_1325\GridGame-Battleships\GridGame-Battleships\GridGame-Battleships1\obj\Debug\GridGame-Battleships.exe
+C:\Users\bossu\OneDrive\Desktop\Uni\sem2\AC22005\GridGame\0802_1325\GridGame-Battleships\GridGame-Battleships\GridGame-Battleships1\obj\Debug\GridGame-Battleships.pdb
