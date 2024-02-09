@@ -42,3 +42,13 @@ C:\Users\dampi\source\repos\GridGame-Battleships1x\obj\Debug\GridGame-Battleship
 C:\Users\dampi\source\repos\GridGame-Battleships1x\obj\Debug\GridGame-Battleships.csproj.CoreCompileInputs.cache
 C:\Users\dampi\source\repos\GridGame-Battleships1x\obj\Debug\GridGame-Battleships.exe
 C:\Users\dampi\source\repos\GridGame-Battleships1x\obj\Debug\GridGame-Battleships.pdb
+C:\Users\bossu\OneDrive\Desktop\Uni\sem2\AC22005\GridGame\final1\GridGame-Battleships\GridGame-Battleships1x\bin\Debug\GridGame-Battleships.exe.config
+C:\Users\bossu\OneDrive\Desktop\Uni\sem2\AC22005\GridGame\final1\GridGame-Battleships\GridGame-Battleships1x\bin\Debug\GridGame-Battleships.exe
+C:\Users\bossu\OneDrive\Desktop\Uni\sem2\AC22005\GridGame\final1\GridGame-Battleships\GridGame-Battleships1x\bin\Debug\GridGame-Battleships.pdb
+C:\Users\bossu\OneDrive\Desktop\Uni\sem2\AC22005\GridGame\final1\GridGame-Battleships\GridGame-Battleships1x\obj\Debug\GridGame-Battleships.csproj.AssemblyReference.cache
+C:\Users\bossu\OneDrive\Desktop\Uni\sem2\AC22005\GridGame\final1\GridGame-Battleships\GridGame-Battleships1x\obj\Debug\GridGame_Battleships.Menu.resources
+C:\Users\bossu\OneDrive\Desktop\Uni\sem2\AC22005\GridGame\final1\GridGame-Battleships\GridGame-Battleships1x\obj\Debug\GridGame_Battleships.Properties.Resources.resources
+C:\Users\bossu\OneDrive\Desktop\Uni\sem2\AC22005\GridGame\final1\GridGame-Battleships\GridGame-Battleships1x\obj\Debug\GridGame-Battleships.csproj.GenerateResource.cache
+C:\Users\bossu\OneDrive\Desktop\Uni\sem2\AC22005\GridGame\final1\GridGame-Battleships\GridGame-Battleships1x\obj\Debug\GridGame-Battleships.csproj.CoreCompileInputs.cache
+C:\Users\bossu\OneDrive\Desktop\Uni\sem2\AC22005\GridGame\final1\GridGame-Battleships\GridGame-Battleships1x\obj\Debug\GridGame-Battleships.exe
+C:\Users\bossu\OneDrive\Desktop\Uni\sem2\AC22005\GridGame\final1\GridGame-Battleships\GridGame-Battleships1x\obj\Debug\GridGame-Battleships.pdb

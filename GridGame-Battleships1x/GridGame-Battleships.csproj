@@ -58,12 +58,6 @@
     <Compile Include="GAME.Designer.cs">
       <DependentUpon>GAME.cs</DependentUpon>
     </Compile>
-    <Compile Include="GameEnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GameEnd.Designer.cs">
-      <DependentUpon>GameEnd.cs</DependentUpon>
-    </Compile>
     <Compile Include="GAMEPLAY.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -82,9 +76,6 @@
     <Compile Include="ShipControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <EmbeddedResource Include="GameEnd.resx">
-      <DependentUpon>GameEnd.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Menu.resx">
       <DependentUpon>Menu.cs</DependentUpon>
     </EmbeddedResource>

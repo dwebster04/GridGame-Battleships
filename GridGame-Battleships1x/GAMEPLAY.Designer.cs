@@ -273,7 +273,7 @@ namespace GridGame_Battleships
                         computersBoard[x, y].Enabled = false;
 
                         // Clear the user's guess so that the user can make another guess
-                        
+
                     }
                 }
             }
@@ -286,7 +286,11 @@ namespace GridGame_Battleships
             {
                 string winner = playerWon() ? "Player" : "Computer";
                 MessageBox.Show($"{winner} has won the game!", "Game Over", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                Manager.Instance.GameState = 4;
+                // Transition to the game end screen
+                Debug.WriteLine(((Button)sender).Text); // SAME handler as before
+                                                        // Update the game state
+                Manager.Instance.GameState = 4; // open finished
+                                                // Close the menu form
                 this.Close();
             }
         }
@@ -455,93 +459,90 @@ namespace GridGame_Battleships
 
         private void computerPlayer_turn()
         {
-            int gx, gy;
             Random rd = new Random();
-            int rand_num = rd.Next();
+            int gx, gy;
 
-
-            // guess around the last hit made
+            // Try to guess around the last hit made if available
             if (computerHits != 0)
             {
-                // enter if the computer has made a hit before
-                // guess the four places around the hit
+                // Get the last hit coordinates
                 gx = lastHit[0];
                 gy = lastHit[1];
-                if (computerGuesses[(gx + 1), gy] == 0)
-                {
-                    // guess this position
-                    gx += 1;
-                    computerGuesses[gx, gy] = 1; // add the guess to the computer guesses array
-                }
-                else if (computerGuesses[(gx - 1), gy] == 1)
-                {
-                    // guess this position
-                    gx -= 1;
-                    computerGuesses[gx, gy] = 1;
-                }
-                else if (computerGuesses[gx, (gy + 1)] == 1)
-                {
-                    // guess this position
-                    gy += 1;
-                    computerGuesses[gx, gy] = 1;
-                } else if (computerGuesses[gx, (gy-1)] == 1)
-                {
-                    // guess this position
-                    gy -= 1;
-                    computerGuesses[gx, gy] = 1;
-                } else
-                {
-                    // if all surrounding places of last hit are occupied, guess a random coordinate
-                    
-                    // guessed coordinate
-                    gx = rd.Next(1, 7);
-                    gy = rd.Next(1, 7);
 
-                    // check that this coorindate isn't in computer guesses array
-                    while (computerGuesses[gx, gy] != 1)
+                // Generate random directions (up, down, left, right)
+                int[] directions = { -1, 1 }; // -1 for left/up, 1 for right/down
+                int randomDirectionIndex = rd.Next(directions.Length);
+                int randomDirection = directions[randomDirectionIndex];
+
+                // Randomly select whether to move horizontally or vertically
+                if (rd.Next(2) == 0)
+                {
+                    // Try to guess horizontally
+                    gx += randomDirection;
+                }
+                else
+                {
+                    // Try to guess vertically
+                    gy += randomDirection;
+                }
+
+                // Check if the new guess is within the grid bounds
+                if (gx >= 0 && gx < 7 && gy >= 0 && gy < 7 && computerGuesses[gx, gy] == 0)
+                {
+                    // If the new guess is valid, mark it as a guess
+                    computerGuesses[gx, gy] = 1;
+
+                    // Check if the computer hit a player's ship
+                    if (playerBoardData[gx, gy] == 1)
                     {
-                        // this place has already been guessed if the corresponding array value is not 0
-                        // another random guess is done, while loop continues until a guess that hasn't already been made is made
-                        gx = rd.Next(1, 7);
-                        gy = rd.Next(1, 7);
+                        // Update UI to indicate a hit
+                        playersBoard[gx, gy].BackColor = Color.Yellow;
+                        computerHits++;
+                        lastHit[0] = gx;
+                        lastHit[1] = gy;
                     }
-
-                    // add the guess to the computer guesses array
-                    computerGuesses[gx, gy] = 1;
                 }
-            } else
-            {
-                // the computer guesses a random coordinate on the player's board
-                
-                // guessed coordinate
-                gx = rd.Next(1, 7);
-                gy = rd.Next(1, 7);
-
-                // check that this coorindate isn't in computer guesses array
-                while (computerGuesses[gx, gy] != 1)
+                else
                 {
-                    // this place has already been guessed if the corresponding array value is not 0
-                    // another random guess is done, while loop continues until a guess that hasn't already been made is made
-                    gx = rd.Next(1, 7);
-                    gy = rd.Next(1, 7);
+                    // If the new guess is not valid, generate a random guess
+                    computerPlayer_random_guess();
                 }
-
-                // add the guess to the computer guesses array
-                computerGuesses[gx, gy] = 1;
             }
+            else
+            {
+                // If the computer has not made any previous hits, generate a random guess
+                computerPlayer_random_guess();
+            }
+        }
 
-            // determine whether the computer hit a player's ship
+        private void computerPlayer_random_guess()
+        {
+            Random rd = new Random();
+            int gx, gy;
+
+            do
+            {
+                gx = rd.Next(7);
+                gy = rd.Next(7);
+            } while (computerGuesses[gx, gy] != 0);
+
+            // Mark the guess
+            computerGuesses[gx, gy] = 1;
+
+            // Check if the computer hit a player's ship
             if (playerBoardData[gx, gy] == 1)
             {
-                // the computer hit the player's ship
-                // increase computer hits by 1
-                computerHits += 1;
-                // record this as a hit
+                // Update UI to indicate a hit
+                playersBoard[gx, gy].BackColor = Color.Yellow;
+                computerHits++;
                 lastHit[0] = gx;
                 lastHit[1] = gy;
-                
             }
-
+            else
+            {
+                // Update UI to indicate a miss
+                playersBoard[gx, gy].BackColor = Color.Black;
+            }
         }
 
         private bool playerWon()

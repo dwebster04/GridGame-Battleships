@@ -30,14 +30,15 @@ namespace GridGame_Battleships
         {
             this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(410, 450); // 175 + 210 + 25
+            this.ClientSize = new System.Drawing.Size(230, 70); // 175 + 210 + 25
             this.Text = "FINISHED";
 
-            // create and initialise the play again button
+            // Initialize the play again button
+            this.btnAgain = new Button();
             this.btnAgain.BackColor = System.Drawing.Color.SkyBlue;
-            this.btnAgain.Location = new System.Drawing.Point(280, 175);
+            this.btnAgain.Location = new System.Drawing.Point(10, 10);
             this.btnAgain.Name = "btnAgain";
-            this.btnAgain.Size = new System.Drawing.Size(400, 75);
+            this.btnAgain.Size = new System.Drawing.Size(100, 50);
             this.btnAgain.TabIndex = 0;
             this.btnAgain.Text = "Play again";
             this.btnAgain.UseVisualStyleBackColor = false;
@@ -45,18 +46,22 @@ namespace GridGame_Battleships
             btnAgain.MouseEnter += new EventHandler(Btn_MouseEnter);
             btnAgain.MouseLeave += new EventHandler(Btn_MouseLeave);
 
-            // create and initialise the exit button
+            // Initialize the exit button
+            this.btnExit = new Button();
             this.btnExit.BackColor = System.Drawing.Color.SkyBlue;
-            this.btnExit.Location = new System.Drawing.Point(280, 275);
+            this.btnExit.Location = new System.Drawing.Point(120, 10);
             this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(400, 75);
-            this.btnExit.TabIndex = 0;
+            this.btnExit.Size = new System.Drawing.Size(100, 50);
+            this.btnExit.TabIndex = 1;
             this.btnExit.Text = "Exit";
             this.btnExit.UseVisualStyleBackColor = false;
             this.btnExit.Click += new System.EventHandler(this.btnExitEvent_Click);
             btnExit.MouseEnter += new EventHandler(Btn_MouseEnter);
             btnExit.MouseLeave += new EventHandler(Btn_MouseLeave);
 
+            // Add the buttons to the form
+            this.Controls.Add(btnAgain);
+            this.Controls.Add(btnExit);
         }
 
         void Btn_MouseEnter(object sender, EventArgs e)
