@@ -456,7 +456,10 @@ namespace GridGame_Battleships
         private void computerPlayer_turn()
         {
             int gx, gy;
-            
+            Random rd = new Random();
+            int rand_num = rd.Next();
+
+
             // guess around the last hit made
             if (computerHits != 0)
             {
@@ -481,18 +484,35 @@ namespace GridGame_Battleships
                     // guess this position
                     gy += 1;
                     computerGuesses[gx, gy] = 1;
-                } else
+                } else if (computerGuesses[gx, (gy-1)] == 1)
                 {
                     // guess this position
                     gy -= 1;
+                    computerGuesses[gx, gy] = 1;
+                } else
+                {
+                    // if all surrounding places of last hit are occupied, guess a random coordinate
+                    
+                    // guessed coordinate
+                    gx = rd.Next(1, 7);
+                    gy = rd.Next(1, 7);
+
+                    // check that this coorindate isn't in computer guesses array
+                    while (computerGuesses[gx, gy] != 1)
+                    {
+                        // this place has already been guessed if the corresponding array value is not 0
+                        // another random guess is done, while loop continues until a guess that hasn't already been made is made
+                        gx = rd.Next(1, 7);
+                        gy = rd.Next(1, 7);
+                    }
+
+                    // add the guess to the computer guesses array
                     computerGuesses[gx, gy] = 1;
                 }
             } else
             {
                 // the computer guesses a random coordinate on the player's board
-                Random rd = new Random();
-                int rand_num = rd.Next();
-
+                
                 // guessed coordinate
                 gx = rd.Next(1, 7);
                 gy = rd.Next(1, 7);
