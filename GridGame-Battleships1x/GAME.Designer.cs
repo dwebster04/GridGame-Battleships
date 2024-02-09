@@ -87,55 +87,54 @@ namespace GridGame_Battleships
             btnControls.MouseEnter += new EventHandler(this.Btn_MouseEnter);
             btnControls.MouseLeave += new EventHandler(this.Btn_MouseLeave);
             btnControls.BackColor = Color.DarkOrchid;
-            Controls.Add(btnControls); // Add the Submit button to the form
+            Controls.Add(btnControls);
 
-            // Create and initialize the Exit button
+            // btnExit
 
             btnExit = new Button();
             btnExit.Text = "Exit";
             btnExit.Size = new Size(100, 50);
-            btnExit.Location = new Point(400, 325); // Adjust the location as needed
-            btnExit.Click += new EventHandler(this.btnExit_Click); // Associate click event
+            btnExit.Location = new Point(400, 325); 
+            btnExit.Click += new EventHandler(this.btnExit_Click);
             btnExit.MouseEnter += new EventHandler(this.Btn_MouseEnter);
             btnExit.MouseLeave += new EventHandler(this.Btn_MouseLeave);
             btnExit.BackColor = Color.DarkOrchid;
-            Controls.Add(btnExit); // Add the Submit button to the form
+            Controls.Add(btnExit); 
 
-
-
-            // Call the method to create buttons
+            // call the method to create buttons
             CreateButtons();
 
         }
-
-
-
+        
+        // creates the grid for user to place ships in
         private void CreateButtons()
         {
-            // Create ship controls on the side of the form and add them to the form
-            ships = new ShipControl[5, 1]; // 5 ships, 1 column
+            // create ships
+            ships = new ShipControl[5, 1];
             for (int i = 0; i < 4; i++)
             {
                 ships[i, 0] = new ShipControl();
-                ships[i, 0].Location = new Point(10, 100 + i * 60); // Adjust the location as needed
-                ships[i, 0].Size = new Size((i + 2) * 50, 50);
-                ships[i, 0].Text = shipNames[i];
+                ships[i, 0].Location = new Point(10, 100 + i * 60); // display ships on the left hand side of the page one on top of another
+                ships[i, 0].Size = new Size((i + 2) * 50, 50); // each ship increases in unit size from 2-5
+                ships[i, 0].Text = shipNames[i]; // set the text to the matching ship name
+
                 for (int u = 0; u < 7; u++)
                 {
                     for (int j = 0; j < 7; j++)
                     {
-                        ships[i, 0].boardLocation[u, j] = 0;
+                        ships[i, 0].boardLocation[u, j] = 0; // set the ships board location to 0
                     }
                 }
-                Controls.Add(ships[i, 0]); // Add ship control to the form's controls
+                Controls.Add(ships[i, 0]); 
             }
 
+            // create the grid of buttons
             for (int x = 0; x < 7; x++)
             {
                 for (int y = 0; y < 7; y++)
                 {
                     btn[x, y] = new Button();
-                    btn[x, y].SetBounds(25 + (50 * x), 25 + (50 * y), 50, 50);
+                    btn[x, y].SetBounds(25 + (50 * x), 25 + (50 * y), 50, 50); // each button is 50 x 50
                     btn[x, y].BackColor = Color.PowderBlue;
                     btn[x, y].Text = Convert.ToString((x + 1) + "," + (y + 1));
                     btn[x, y].Click += new EventHandler(this.btnEvent_Click);
@@ -146,23 +145,25 @@ namespace GridGame_Battleships
             
         }
 
+        // when button is clicked
         private void btnEvent_Click(object sender, EventArgs e)
         {
             Debug.WriteLine(((Button)sender).Text);
         }
 
+        // when mosue enters change colour
         void Btn_MouseEnter(object sender, EventArgs e)
         {
-            // Change the button color when the mouse enters
             ((Button)sender).BackColor = System.Drawing.Color.Blue;
         }
 
+        // when mouse leaves change colour to original
         void Btn_MouseLeave(object sender, EventArgs e)
         {
-            // Change the button color back to its original color when the mouse leaves
             ((Button)sender).BackColor = System.Drawing.Color.DarkOrchid;
         }
 
+        // when the check button is clicked let the user know if their ships are in valid locations
         private void btnCheck_Click(object sender, EventArgs e)
         {
             Debug.WriteLine("Check button clicked!");
@@ -170,11 +171,11 @@ namespace GridGame_Battleships
 
             if (ValidShips)
             {
-                btnCheck.BackColor = Color.Green; // Set to green if ships are valid
+                btnCheck.BackColor = Color.Green; // set to green if ships are valid
             }
             else
             {
-                btnCheck.BackColor = Color.Red; // Set to red if ships are not valid
+                btnCheck.BackColor = Color.Red; // set to red if ships are not valid
             }
 
             for (int i = 0; i < 4; i++)
@@ -192,21 +193,23 @@ namespace GridGame_Battleships
                     }
                 }
 
-                Debug.WriteLine(""); // Add a line break after each ship's coordinates
+                Debug.WriteLine(""); 
             }
         }
 
+        // when the reset button is clicked remove all ships off the board back their original state
         private void btnReset_Click(object sender, EventArgs e)
         {
             Debug.WriteLine("Reset button clicked!");
             for (int i = 0; i < 4; i++)
             {
                 
-                ships[i, 0].Location = new Point(10, 100 + i * 60); // Adjust the location as needed
+                ships[i, 0].Location = new Point(10, 100 + i * 60); 
 
             }
         }
 
+        // when the controls button is clicked display a message box showing the controls
         private void btnControls_Click(object sender, EventArgs e)
         {
             string message = "LMB - Click and Drag ships\n" +
@@ -217,19 +220,23 @@ namespace GridGame_Battleships
                              "Press SUBMIT to start playing the game";
             MessageBox.Show(message, "Controls", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
+        // when the exit button is clicked go back to menu
         void btnExit_Click(object sender, EventArgs e)
         {
-            Debug.WriteLine(((Button)sender).Text); // SAME handler as before
-                                                    // Update the game state
-            Manager.Instance.GameState = 0; // open menu
-                                            // Close the menu form
+            Debug.WriteLine(((Button)sender).Text);
+            // Update the game state
+            Manager.Instance.GameState = 0;
+            // Close the menu form
             this.Close();
         }
 
+        // check to see if ships are valid
         private void check()
         {      
             ValidShips = true;
 
+            // reset the occupied board
             for (int i = 0; i < 7; i++)
             {
                 for (int j = 0; j < 7; j++)
@@ -237,15 +244,16 @@ namespace GridGame_Battleships
                     occupied[i, j] = 0;
                 }
             }
-
+            
+            // loop through all ships
             for (int i = 0; i < 4; i++)
             {
-
                 Button btnClosest = new Button();
                 int distance = 0;
                 int closest = 1000000;
                 int closestX = 0; int closestY = 0;
 
+                // reset the ships board location
                 for (int u = 0; u < 7; u++)
                 {
                     for (int v = 0; v < 7; v++)
@@ -254,6 +262,7 @@ namespace GridGame_Battleships
                     }
                 }
 
+                // find the button closest to the ships position
                 for (int x = 0; x < 7; x++)
                 {
                     for (int y = 0; y < 7; y++)
@@ -262,7 +271,7 @@ namespace GridGame_Battleships
                         Point btnPos = new Point(btn[x, y].Left, btn[x, y].Top);
                         distance = ShipControl.CalculateDistance(shipPos, btnPos);
 
-                        if (distance < closest)
+                        if (distance < closest) // if new closest distance found
                         {
                             closest = distance;
                             btnClosest = btn[x, y];
@@ -273,6 +282,7 @@ namespace GridGame_Battleships
 
                 }
 
+                // set the ships location to the closest button
                 ships[i, 0].Location = btnClosest.Location;
                 ShipControl checkShip = ships[i, 0];
                 if (checkShip.Height > checkShip.Width) // if ships is vertical
@@ -319,6 +329,7 @@ namespace GridGame_Battleships
                     }
                 }
 
+                // loop through occupied array to check if ships are overlapping at any point
                 for (int c = 0; c < 7; c++)
                 {
                     for (int d = 0; d < 7; d++)
@@ -342,6 +353,8 @@ namespace GridGame_Battleships
                 occupied[6, innerCounter]);
             }
         }
+
+        // when submit button is clicked go to GAMEPLAY screen if valid ships
         private void btnSubmit_Click(object sender, EventArgs e)
         {
             Debug.WriteLine("Submit button clicked!");
@@ -357,9 +370,9 @@ namespace GridGame_Battleships
             }
             else
             {
-                // Display a pop-up window saying invalid ships
+                // display a pop-up window saying invalid ships
                 MessageBox.Show(errorMessage, "Invalid Ships", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                btnCheck.BackColor = Color.Red; // Set to red if ships are not valid
+                btnCheck.BackColor = Color.Red; // set to red if ships are not valid
             }
         }
 
