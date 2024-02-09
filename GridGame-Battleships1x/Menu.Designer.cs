@@ -3,6 +3,9 @@ using System;
 using System.Windows.Forms;
 using System.Diagnostics;
 
+// Menu.Designer.cs
+// This form is displayed first when program is run giving the user the option to play or quit
+
 namespace GridGame_Battleships
 {
     partial class Menu
@@ -21,12 +24,12 @@ namespace GridGame_Battleships
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Menu));
-            this.btnStart = new System.Windows.Forms.Button();
+            this.btnStart = new System.Windows.Forms.Button(); 
             this.btnExit = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
+            
             // btnStart
-            // 
+            
             this.btnStart.BackColor = System.Drawing.Color.DarkOrchid;
             this.btnStart.Location = new System.Drawing.Point(280, 175);
             this.btnStart.Name = "btnStart";
@@ -37,9 +40,9 @@ namespace GridGame_Battleships
             this.btnStart.Click += new System.EventHandler(this.btnStartEvent_Click);
             btnStart.MouseEnter += new EventHandler(Btn_MouseEnter);
             btnStart.MouseLeave += new EventHandler(Btn_MouseLeave);
-            // 
+            
             // btnExit
-            // 
+            
             this.btnExit.BackColor = System.Drawing.Color.DarkOrchid;
             this.btnExit.Location = new System.Drawing.Point(280, 275);
             this.btnExit.Name = "btnExit";
@@ -50,9 +53,9 @@ namespace GridGame_Battleships
             this.btnExit.Click += new System.EventHandler(this.btnExitEvent_Click);
             btnExit.MouseEnter += new EventHandler(Btn_MouseEnter);
             btnExit.MouseLeave += new EventHandler(Btn_MouseLeave);
-            // 
+             
             // Menu
-            // 
+             
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
@@ -69,31 +72,33 @@ namespace GridGame_Battleships
            
         void btnStartEvent_Click(object sender, EventArgs e)
         {
-        Debug.WriteLine(((Button)sender).Text); // SAME handler as before
-        // Update the game state
-        Manager.Instance.GameState = 1; // open game
-        // Close the menu form
-        this.Close();
+            Debug.WriteLine(((Button)sender).Text);
+
+            // update the game state
+            Manager.Instance.GameState = 1;
+            // close the menu form
+            this.Close();
         }
 
         void btnExitEvent_Click(object sender, EventArgs e)
         {
-            Debug.WriteLine(((Button)sender).Text); // SAME handler as before
-                                                    // Update the game state
-            Manager.Instance.GameState = 2; // open game
-                                            // Close the menu form
+            Debug.WriteLine(((Button)sender).Text); 
+           
+            // update the game state
+            Manager.Instance.GameState = 2; 
+            // close the menu form
             this.Close();
         }
 
         void Btn_MouseEnter(object sender, EventArgs e)
         {
-            // Change the button color when the mouse enters
+            // change the button color when the mouse enters
             ((Button)sender).BackColor = System.Drawing.Color.Blue;
         }
 
         void Btn_MouseLeave(object sender, EventArgs e)
         {
-            // Change the button color back to its original color when the mouse leaves
+            // change the button color back to its original color when the mouse leaves
             ((Button)sender).BackColor = System.Drawing.Color.DarkOrchid;
         }
         void Menu_Load(object sender, EventArgs e) //REQUIRED

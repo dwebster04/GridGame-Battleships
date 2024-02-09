@@ -2,6 +2,9 @@
 using System.Drawing;
 using System.Windows.Forms;
 
+// ShipControl.cs
+// Responsible for the ship objects and how they are interacted with by the user
+
 namespace GridGame_Battleships
 {
     public class ShipControl : Button
@@ -16,31 +19,33 @@ namespace GridGame_Battleships
             // Set default properties for the ship control
             this.Size = new Size(100, 40);
             this.BackColor = Color.Gray;
-            this.originalColor = this.BackColor; // Store the original color
-            this.Text = "Ship";
+            this.originalColor = this.BackColor; // store the original color
+            this.Text = "Ship"; // default text
             this.MouseDown += ShipControl_MouseDown;
             this.MouseMove += ShipControl_MouseMove;
             this.MouseUp += ShipControl_MouseUp;
-            this.KeyDown += ShipControl_KeyDown; // Add key-down event
-            this.Click += ShipControl_Click; // Add click event
+            this.KeyDown += ShipControl_KeyDown; // add key-down event
+            this.Click += ShipControl_Click; // add click event
         }
 
+        // what happens when mouse is pressed down on a ship
         private void ShipControl_MouseDown(object sender, MouseEventArgs e)
         {
-            isDragging = true;
-            offset = new Point(Width / 2, Height / 2);
-            // Setting the offset to half of the width and height to center the ship control
+            isDragging = true; // set draggin to true
 
-            // Adjust the location so the ship is centered on the mouse
+            offset = new Point(Width / 2, Height / 2); 
+
+            // adjust the location so the ship is centered on the mouse
             this.Location = new Point(e.X - offset.X, e.Y - offset.Y);
 
-            // Change color to pink while dragging
+            // change color to pink while dragging
             this.BackColor = Color.MediumOrchid;
         }
 
+        // when the mouse moves
         private void ShipControl_MouseMove(object sender, MouseEventArgs e)
         {
-            if (isDragging)
+            if (isDragging) // if its dragging/mouse held down keep the ship on the mouse position
             {
                 Point newLocation = ((Control)sender).PointToScreen(new Point(e.X, e.Y));
                 newLocation.Offset(-offset.X, -offset.Y);
@@ -49,14 +54,16 @@ namespace GridGame_Battleships
             }
         }
 
+        // when the mouse click stops being held
         private void ShipControl_MouseUp(object sender, MouseEventArgs e)
         {
-            isDragging = false;
+            isDragging = false; // set dragging to false
 
-            // Revert to the original color when the mouse is released
+            // revert to the original color when the mouse is released
             this.BackColor = originalColor;
         }
 
+        // used to find closest point on the grid
         public static int CalculateDistance(Point point1, Point point2)
         {
             int dx = point1.X - point2.X;
@@ -64,29 +71,30 @@ namespace GridGame_Battleships
             return (int)Math.Sqrt(dx * dx + dy * dy);
         }
 
+        // when dragging and r is pressed rotate the ships
         private void ShipControl_KeyDown(object sender, KeyEventArgs e)
         {
             if (isDragging)
             {
                 if (e.KeyCode == Keys.R)
                 {
-                    // Swap height and width on 'R' key press
+                    // swap height and width on 'R' key press
                     int temp = this.Width;
                     this.Width = this.Height;
                     this.Height = temp;
 
                     offset = new Point(Width / 2, Height / 2);
-                    // Setting the offset to half of the width and height to center the ship control
-
-                    // Adjust the location so the ship is centered on the mouse
+      
+                    // adjust the location so the ship is centered on the mouse
                     this.Location = new Point(MousePosition.X - offset.X, MousePosition.Y - offset.Y);
                 }
             }
         }
 
+        // NOT NEEDED
         private void ShipControl_Click(object sender, EventArgs e)
         {
-            // Handle click event if needed
+            // handle click event if needed
         }
     }
 }

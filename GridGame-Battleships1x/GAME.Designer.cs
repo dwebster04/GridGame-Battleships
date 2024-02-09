@@ -4,6 +4,9 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Net.Sockets;
 
+// GAME.Designer.cs
+// This is form is where the user chooses where to place there ships
+
 namespace GridGame_Battleships
 {
     partial class GAME
@@ -16,11 +19,11 @@ namespace GridGame_Battleships
         private String errorMessage = "";
         private System.ComponentModel.IContainer components = null;
         private bool ValidShips = false;
-        private Button btnCheck; // Declare the Check button
-        private Button btnSubmit; // Declare the Submit button
-        private Button btnReset; // Declare the Reset button
-        private Button btnControls; // Declare the Controls button
-        private Button btnExit; // Declare the Exit button
+        private Button btnCheck; // declare the Check button
+        private Button btnSubmit; // declare the Submit button
+        private Button btnReset; // declare the Reset button
+        private Button btnControls; // declare the Controls button
+        private Button btnExit; // declare the Exit button
 
         protected override void Dispose(bool disposing)
         {
@@ -38,51 +41,56 @@ namespace GridGame_Battleships
             this.ClientSize = new System.Drawing.Size(525, 400);
             this.Text = "GAME";
             
-            // Create and initialize the Check button
+            // btnCheck
+
             btnCheck = new Button();
             btnCheck.Text = "Check";
             btnCheck.Size = new Size(100, 50);
-            btnCheck.Location = new Point(400, 25); // Adjust the location as needed
-            btnCheck.Click += new EventHandler(this.btnCheck_Click); // Associate click event
+            btnCheck.Location = new Point(400, 25); 
+            btnCheck.Click += new EventHandler(this.btnCheck_Click);
             btnCheck.MouseEnter += new EventHandler(this.Btn_MouseEnter);
             btnCheck.MouseLeave += new EventHandler(this.Btn_MouseLeave);
             btnCheck.BackColor = Color.DarkOrchid;
-            Controls.Add(btnCheck); // Add the Submit button to the form
+            Controls.Add(btnCheck);
 
-            // Create and initialize the Submit button
+            // btnSubmit
+
             btnSubmit = new Button();
             btnSubmit.Text = "Submit";
             btnSubmit.Size = new Size(100, 50);
-            btnSubmit.Location = new Point(400, 100); // Adjust the location as needed
-            btnSubmit.Click += new EventHandler(this.btnSubmit_Click); // Associate click event
+            btnSubmit.Location = new Point(400, 100); 
+            btnSubmit.Click += new EventHandler(this.btnSubmit_Click); 
             btnSubmit.MouseEnter += new EventHandler(this.Btn_MouseEnter);
             btnSubmit.MouseLeave += new EventHandler(this.Btn_MouseLeave);
             btnSubmit.BackColor = Color.DarkOrchid;
-            Controls.Add(btnSubmit); // Add the Submit button to the form
+            Controls.Add(btnSubmit); 
 
-            // Create and initialize the Reset button
+            // btnReset
+
             btnReset = new Button();
             btnReset.Text = "Reset";
             btnReset.Size = new Size(100, 50);
-            btnReset.Location = new Point(400, 175); // Adjust the location as needed
-            btnReset.Click += new EventHandler(this.btnReset_Click); // Associate click event
+            btnReset.Location = new Point(400, 175); 
+            btnReset.Click += new EventHandler(this.btnReset_Click);
             btnReset.MouseEnter += new EventHandler(this.Btn_MouseEnter);
             btnReset.MouseLeave += new EventHandler(this.Btn_MouseLeave);
             btnReset.BackColor = Color.DarkOrchid;
-            Controls.Add(btnReset); // Add the Submit button to the form
+            Controls.Add(btnReset); 
 
-            // Create and initialize the Controls button
+            // btnControls
+
             btnControls = new Button();
             btnControls.Text = "Controls";
             btnControls.Size = new Size(100, 50);
-            btnControls.Location = new Point(400, 250); // Adjust the location as needed
-            btnControls.Click += new EventHandler(this.btnControls_Click); // Associate click event
+            btnControls.Location = new Point(400, 250); 
+            btnControls.Click += new EventHandler(this.btnControls_Click); 
             btnControls.MouseEnter += new EventHandler(this.Btn_MouseEnter);
             btnControls.MouseLeave += new EventHandler(this.Btn_MouseLeave);
             btnControls.BackColor = Color.DarkOrchid;
             Controls.Add(btnControls); // Add the Submit button to the form
 
             // Create and initialize the Exit button
+
             btnExit = new Button();
             btnExit.Text = "Exit";
             btnExit.Size = new Size(100, 50);
